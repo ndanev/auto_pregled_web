@@ -1,8 +1,27 @@
 <script setup lang="ts">
-const car = getMockCars()[0]
-const analysis = getMockAnalysis()
+const route = useRoute()
+const slug = route.params.slug as string
+
+const { fetchCarBySlug } = useCarsApi()
+const { data, error } = await useAsyncData(`car-${slug}`, () => fetchCarBySlug(slug))
+
+if (error.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Automobil nije pronađen' })
+}
+
+const car = computed(() => data.value!.data)
+const analysis = computed(() => car.value.analysis)
 
 const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji', high: 'Visok' }
+
+function isInsufficient(section: string): boolean {
+  return analysis.value?.data_quality.insufficient_sections.includes(section) ?? false
+}
+
+useSeoMeta({
+  title: car.value.meta_title || `${car.value.brand} ${car.value.model}`,
+  description: car.value.meta_description || analysis.value?.ai_summary.short_description,
+})
 </script>
 
 <template>
@@ -14,23 +33,25 @@ const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji
         <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 items-start">
           <div>
             <span class="font-mono text-xs tracking-[0.2em] text-steel">
-              {{ car.bodyType.toUpperCase() }} · {{ car.fuelType.toUpperCase() }}
+              {{ (car.body_type ?? car.fuel_type).toUpperCase() }} · {{ car.fuel_type.toUpperCase() }}
             </span>
             <h1 class="font-display font-extrabold uppercase leading-[0.9] text-5xl md:text-7xl mt-2 text-ink">
               {{ car.brand }} {{ car.model }}
             </h1>
             <p class="font-mono text-sm text-ink/60 mt-3">
-              {{ car.generation }} · {{ car.years }} · {{ car.engine }} · {{ car.power }} KS
+              {{ car.generation }} · {{ car.years }} · {{ car.engine }} · {{ car.power_hp }} KS
             </p>
-            <p class="mt-6 text-lg leading-relaxed max-w-xl text-ink/70">{{ car.shortDescription }}</p>
+            <p v-if="analysis" class="mt-6 text-lg leading-relaxed max-w-xl text-ink/70">
+              {{ analysis.ai_summary.short_description }}
+            </p>
           </div>
-          <RatingGauge :rating="car.rating" label="AI OCENA" :size="200" />
+          <RatingGauge v-if="car.overall_rating" :rating="car.overall_rating" label="AI OCENA" :size="200" />
         </div>
 
         <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 border-t border-white/10 pt-6 gap-6">
           <div v-for="spec in [
-            { label: 'GORIVO', value: car.fuelType },
-            { label: 'SNAGA', value: `${car.power} KS` },
+            { label: 'GORIVO', value: car.fuel_type },
+            { label: 'SNAGA', value: `${car.power_hp} KS` },
             { label: 'MENJAČ', value: car.transmission },
             { label: 'GENERACIJA', value: car.years },
           ]" :key="spec.label">
@@ -41,7 +62,30 @@ const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji
       </div>
     </section>
 
-    <div class="mx-auto max-w-5xl px-6 py-14 space-y-16">
+    <div v-if="!analysis" class="mx-auto max-w-5xl px-6 py-14 text-ink/50 font-mono text-sm">
+      AI analiza za ovaj automobil još nije generisana.
+    </div>
+
+    <div v-else class="mx-auto max-w-5xl px-6 py-14 space-y-16">
+      <!-- Ciljna publika -->
+      <section>
+        <SectionLabel text="ZA KOGA JE" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="border border-white/10 bg-surface p-5">
+            <span class="font-mono text-xs tracking-widest text-diagnostic">IDEALNO ZA</span>
+            <ul class="mt-3 space-y-1.5 text-sm text-ink/70">
+              <li v-for="item in analysis.target_audience.ideal_for" :key="item">{{ item }}</li>
+            </ul>
+          </div>
+          <div class="border border-white/10 bg-surface p-5">
+            <span class="font-mono text-xs tracking-widest text-rust">NIJE PREPORUČLJIVO ZA</span>
+            <ul class="mt-3 space-y-1.5 text-sm text-ink/70">
+              <li v-for="item in analysis.target_audience.not_recommended_for" :key="item">{{ item }}</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <!-- Prednosti / Mane -->
       <section>
         <SectionLabel text="PREDNOSTI I MANE" />
@@ -70,6 +114,9 @@ const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji
       <!-- Pouzdanost -->
       <section>
         <SectionLabel text="POUZDANOST" />
+        <p v-if="isInsufficient('reliability')" class="font-mono text-xs text-amber mb-3">
+          Podaci o pouzdanosti su procena zasnovana na ograničenim informacijama.
+        </p>
         <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center border border-white/10 bg-surface p-6">
           <RatingGauge :rating="analysis.reliability.score" label="POUZDANOST" :size="160" />
           <div class="space-y-4 w-full">
@@ -112,7 +159,7 @@ const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji
       </section>
 
       <!-- Najčešći kvarovi -->
-      <section>
+      <section v-if="analysis.maintenance.common_repairs.length > 0">
         <SectionLabel text="NAJČEŠĆI KVAROVI" />
         <div class="border border-white/10 divide-y divide-white/10">
           <div v-for="repair in analysis.maintenance.common_repairs" :key="repair.problem" class="flex items-center justify-between px-5 py-3 bg-surface">
@@ -148,7 +195,7 @@ const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji
       </section>
 
       <!-- Alternative -->
-      <section>
+      <section v-if="analysis.alternatives.length > 0">
         <SectionLabel text="ALTERNATIVE" />
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div v-for="alt in analysis.alternatives" :key="alt.model" class="border border-white/10 bg-surface p-4">
@@ -162,7 +209,7 @@ const costLevelLabels: Record<string, string> = { low: 'Nizak', medium: 'Srednji
       <section>
         <SectionLabel text="AI ZAKLJUČAK" />
         <div class="border-l-2 border-amber bg-surface p-6">
-          <p class="text-lg leading-relaxed text-ink/85">{{ analysis.final_verdict }}</p>
+          <p class="text-lg leading-relaxed text-ink/85">{{ analysis.ai_summary.final_verdict }}</p>
         </div>
       </section>
     </div>

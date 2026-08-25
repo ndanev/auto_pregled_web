@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const cars = getMockCars()
+const { fetchCars } = useCarsApi()
+const { data } = await useAsyncData('home-cars', () => fetchCars())
+const cars = computed(() => data.value?.data ?? [])
+
 const quickPicks = ['Renault Kadjar', 'Volkswagen Golf 7', 'Škoda Octavia']
 </script>
 
@@ -7,7 +10,6 @@ const quickPicks = ['Renault Kadjar', 'Volkswagen Golf 7', 'Škoda Octavia']
   <div>
     <section class="relative border-b border-white/10 overflow-hidden">
       <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(600px circle at 50% 0%, rgba(232,163,61,0.12), transparent 70%);"></div>
-
       <div class="relative mx-auto max-w-4xl px-6 py-20 md:py-28 text-center">
         <span class="font-mono text-xs tracking-[0.2em] text-steel">AI ANALIZA VOZILA</span>
         <h1 class="font-display font-extrabold uppercase leading-[0.9] text-5xl md:text-7xl mt-4 text-ink">
@@ -45,7 +47,8 @@ const quickPicks = ['Renault Kadjar', 'Volkswagen Golf 7', 'Škoda Octavia']
         <NuxtLink to="/cars" class="font-mono text-xs text-amber hover:underline">Prikaži sve →</NuxtLink>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+      <div v-if="cars.length === 0" class="text-ink/50 font-mono text-sm">Trenutno nema objavljenih automobila.</div>
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
         <CarCard v-for="car in cars" :key="car.slug" :car="car" />
       </div>
     </section>
