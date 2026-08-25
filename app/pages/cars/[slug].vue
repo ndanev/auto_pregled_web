@@ -62,6 +62,10 @@ useSeoMeta({
       </div>
     </section>
 
+    <div v-if="car.images.length > 0" class="mx-auto max-w-5xl px-6 pt-10">
+      <CarGallery :images="car.images" />
+    </div>
+
     <div v-if="!analysis" class="mx-auto max-w-5xl px-6 py-14 text-ink/50 font-mono text-sm">
       AI analiza za ovaj automobil još nije generisana.
     </div>
