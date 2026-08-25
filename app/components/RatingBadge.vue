@@ -13,7 +13,7 @@ const percentage = computed(() => Math.min(100, Math.max(0, (props.rating / 10) 
         class="transition-all duration-700 ease-out"
       />
     </svg>
-    <span class="absolute inset-x-0 bottom-0 text-center font-mono text-sm font-semibold text-ink">
+    <span class="absolute inset-x-0 bottom-0 text-center font-mono text-data font-semibold text-ink">
       {{ rating.toFixed(1) }}
     </span>
   </div>
