@@ -3,8 +3,10 @@ import type { CarSummary, CarDetail } from '~/types/car'
 export function useCarsApi() {
   const { api } = useApi()
 
-  function fetchCars() {
-    return api<{ data: CarSummary[] }>('/api/cars')
+  function fetchCars(query?: string) {
+    return api<{ data: CarSummary[] }>('/api/cars', {
+      params: query ? { q: query } : {},
+    })
   }
 
   function fetchCarBySlug(slug: string) {

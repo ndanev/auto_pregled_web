@@ -4,6 +4,17 @@ const { data } = await useAsyncData('home-cars', () => fetchCars())
 const cars = computed(() => data.value?.data ?? [])
 
 const quickPicks = ['Renault Kadjar', 'Volkswagen Golf 7', 'Škoda Octavia']
+
+const router = useRouter()
+const searchQuery = ref('')
+
+function handleSearch() {
+  router.push({ path: '/cars', query: searchQuery.value ? { q: searchQuery.value } : {} })
+}
+
+function handleQuickPick(pick: string) {
+  router.push({ path: '/cars', query: { q: pick } })
+}
 </script>
 
 <template>
@@ -20,8 +31,9 @@ const quickPicks = ['Renault Kadjar', 'Volkswagen Golf 7', 'Škoda Octavia']
           na jednom mestu, pre nego što odlučiš.
         </p>
 
-        <form class="mt-8 flex mx-auto max-w-lg border border-white/15 bg-surface" @submit.prevent>
+        <form class="mt-8 flex mx-auto max-w-lg border border-white/15 bg-surface" @submit.prevent="handleSearch">
           <input
+            v-model="searchQuery"
             type="text" placeholder="Pretraži marku ili model, npr. Golf 7"
             class="flex-1 bg-transparent px-4 py-3 font-mono text-sm placeholder:text-ink/40 focus:outline-none text-ink"
           />
@@ -31,9 +43,13 @@ const quickPicks = ['Renault Kadjar', 'Volkswagen Golf 7', 'Škoda Octavia']
         </form>
 
         <div class="mt-4 flex flex-wrap justify-center gap-2">
-          <span v-for="pick in quickPicks" :key="pick" class="font-mono text-xs px-3 py-1.5 border border-white/10 rounded-full text-ink/60">
+          <button
+            v-for="pick in quickPicks" :key="pick"
+            @click="handleQuickPick(pick)"
+            class="font-mono text-xs px-3 py-1.5 border border-white/10 rounded-full text-ink/60 hover:border-amber/50 hover:text-ink transition-colors"
+          >
             {{ pick }}
-          </span>
+          </button>
         </div>
       </div>
     </section>
