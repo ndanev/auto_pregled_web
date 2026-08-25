@@ -18,9 +18,40 @@ function isInsufficient(section: string): boolean {
   return analysis.value?.data_quality.insufficient_sections.includes(section) ?? false
 }
 
+const ogImage = computed(() => car.value.images[0]?.url)
+
 useSeoMeta({
-  title: car.value.meta_title || `${car.value.brand} ${car.value.model}`,
+  title: car.value.meta_title || `${car.value.brand} ${car.value.model} — AI Pregled`,
   description: car.value.meta_description || analysis.value?.ai_summary.short_description,
+  ogTitle: car.value.meta_title || `${car.value.brand} ${car.value.model}`,
+  ogDescription: car.value.meta_description || analysis.value?.ai_summary.short_description,
+  ogImage: ogImage.value,
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+})
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: computed(() =>
+        JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Vehicle',
+          name: `${car.value.brand} ${car.value.model} ${car.value.generation}`,
+          brand: { '@type': 'Brand', name: car.value.brand },
+          model: car.value.model,
+          vehicleEngine: {
+            '@type': 'EngineSpecification',
+            name: car.value.engine,
+            fuelType: car.value.fuel_type,
+          },
+          vehicleTransmission: car.value.transmission,
+          ...(ogImage.value && { image: ogImage.value }),
+        })
+      ),
+    },
+  ],
 })
 </script>
 
