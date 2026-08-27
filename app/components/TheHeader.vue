@@ -8,6 +8,9 @@
         <NuxtLink to="/cars" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">
           Automobili
         </NuxtLink>
+        <NuxtLink to="/brands" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">
+          Marke
+        </NuxtLink>
       </nav>
     </div>
   </header>

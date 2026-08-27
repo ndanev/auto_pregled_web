@@ -3,9 +3,13 @@ import type { CarSummary, CarDetail } from '~/types/car'
 export function useCarsApi() {
   const { api } = useApi()
 
-  function fetchCars(query?: string) {
+  function fetchCars(params?: { query?: string; brandSlug?: string; modelSlug?: string }) {
     return api<{ data: CarSummary[] }>('/api/cars', {
-      params: query ? { q: query } : {},
+      params: {
+        q: params?.query || undefined,
+        brand_slug: params?.brandSlug || undefined,
+        model_slug: params?.modelSlug || undefined,
+      },
     })
   }
 

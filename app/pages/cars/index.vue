@@ -3,18 +3,19 @@ const route = useRoute()
 const router = useRouter()
 
 const searchQuery = ref((route.query.q as string) ?? '')
+const brandSlug = computed(() => route.query.brand_slug as string | undefined)
+const modelSlug = computed(() => route.query.model_slug as string | undefined)
 
 const { fetchCars } = useCarsApi()
 const { data, refresh } = await useAsyncData(
   'all-cars',
-  () => fetchCars(searchQuery.value || undefined),
-  { watch: [searchQuery] }
+  () => fetchCars({ query: searchQuery.value || undefined, brandSlug: brandSlug.value, modelSlug: modelSlug.value }),
+  { watch: [searchQuery, brandSlug, modelSlug] }
 )
 const cars = computed(() => data.value?.data ?? [])
 
-// Drži URL query u sinhronizaciji sa unosom (bez reload-a stranice)
 watch(searchQuery, (value) => {
-  router.replace({ query: value ? { q: value } : {} })
+  router.replace({ query: { ...route.query, q: value || undefined } })
 })
 </script>
 
