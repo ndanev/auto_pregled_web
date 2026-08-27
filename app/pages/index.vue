@@ -19,9 +19,8 @@ function handleQuickPick(pick: string) {
 
 <template>
   <div>
-    <section class="relative border-b border-white/10 overflow-hidden">
-      <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(600px circle at 50% 0%, rgba(232,163,61,0.12), transparent 70%);"></div>
-      <div class="relative mx-auto max-w-4xl px-6 py-20 md:py-28 text-center">
+    <section class="border-b border-black/10">
+      <div class="mx-auto max-w-4xl px-6 py-20 md:py-28 text-center">
         <span class="font-mono text-eyebrow text-steel">AI ANALIZA VOZILA</span>
         <h1 class="font-display font-extrabold uppercase leading-[0.9] text-display-lg md:text-display-xl mt-4 text-ink">
           Da li je ovo<br /><span class="text-amber">dobar izbor?</span>
@@ -31,13 +30,13 @@ function handleQuickPick(pick: string) {
           na jednom mestu, pre nego što odlučiš.
         </p>
 
-        <form class="mt-8 flex mx-auto max-w-lg border border-white/15 bg-surface" @submit.prevent="handleSearch">
+        <form class="mt-8 flex mx-auto max-w-lg border border-black/15 bg-surface" @submit.prevent="handleSearch">
           <input
             v-model="searchQuery"
             type="text" placeholder="Pretraži marku ili model, npr. Golf 7"
             class="flex-1 bg-transparent px-4 py-3 font-mono text-body-sm placeholder:text-ink/40 focus:outline-none text-ink"
           />
-          <button type="submit" class="bg-amber text-canvas font-mono text-eyebrow px-5 hover:bg-amber/90 transition-colors">
+          <button type="submit" class="bg-amber text-white font-mono text-eyebrow px-5 hover:bg-amber/90 transition-colors">
             Pretraga
           </button>
         </form>
@@ -46,7 +45,7 @@ function handleQuickPick(pick: string) {
           <button
             v-for="pick in quickPicks" :key="pick"
             @click="handleQuickPick(pick)"
-            class="font-mono text-data-sm px-3 py-1.5 border border-white/10 rounded-full text-ink/60 hover:border-amber/50 hover:text-ink transition-colors"
+            class="font-mono text-data-sm px-3 py-1.5 border border-black/10 rounded-full text-ink/60 hover:border-amber/40 hover:text-ink transition-colors"
           >
             {{ pick }}
           </button>

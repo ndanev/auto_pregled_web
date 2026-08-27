@@ -14,18 +14,18 @@ function handleToggleCompare(e: MouseEvent) {
 <template>
   <NuxtLink
     :to="`/automobili/${car.slug}`"
-    class="group block border border-white/10 bg-surface overflow-hidden hover:border-amber/50 transition-colors relative"
+    class="group block border border-black/10 bg-surface overflow-hidden hover:border-amber/40 transition-colors relative"
   >
     <button
       @click="handleToggleCompare"
       class="absolute top-3 right-3 z-10 w-6 h-6 flex items-center justify-center border transition-colors"
-      :class="isSelected(car.slug) ? 'bg-amber border-amber text-canvas' : 'bg-canvas/80 border-white/20 text-ink/60 hover:border-amber/50'"
+      :class="isSelected(car.slug) ? 'bg-amber border-amber text-white' : 'bg-canvas/80 border-black/15 text-ink/60 hover:border-amber/50'"
       :title="isSelected(car.slug) ? 'Ukloni iz poređenja' : 'Dodaj za poređenje'"
     >
       <span class="text-xs leading-none">✓</span>
     </button>
 
-    <div class="relative h-36 bg-gradient-to-br from-[#1F232B] to-[#0C0E12] overflow-hidden">
+    <div class="relative h-36 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
       <img
         v-if="car.main_thumbnail_url"
         :src="car.main_thumbnail_url"
@@ -33,11 +33,11 @@ function handleToggleCompare(e: MouseEvent) {
         class="absolute inset-0 w-full h-full object-cover"
       />
       <template v-else>
-        <div class="absolute -inset-y-10 left-1/3 w-24 rotate-[20deg] bg-amber/25 blur-2xl"></div>
-        <div class="absolute -inset-y-10 left-1/2 w-8 rotate-[20deg] bg-amber/40 blur-md"></div>
+        <div class="absolute -inset-y-10 left-1/3 w-24 rotate-[20deg] bg-black/10 blur-2xl"></div>
+        <div class="absolute -inset-y-10 left-1/2 w-8 rotate-[20deg] bg-black/15 blur-md"></div>
       </template>
 
-      <span class="absolute top-3 left-3 bg-canvas/80 backdrop-blur px-2 py-1 font-mono text-eyebrow text-ink/80 border border-white/10">
+      <span class="absolute top-3 left-3 bg-canvas/85 backdrop-blur px-2 py-1 font-mono text-eyebrow text-ink/80 border border-black/10">
         {{ car.body_type ?? car.fuel_type }}
       </span>
       <span class="absolute bottom-3 left-3 font-mono text-data-sm text-ink/50">{{ car.years }}</span>

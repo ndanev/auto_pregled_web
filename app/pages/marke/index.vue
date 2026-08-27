@@ -17,7 +17,7 @@ const brands = computed(() => data.value?.data ?? [])
         v-for="brand in brands"
         :key="brand.slug"
         :to="`/marke/${brand.slug}`"
-        class="group block border border-white/10 bg-surface p-5 hover:border-amber/50 transition-colors"
+        class="group block border border-black/10 bg-surface p-5 hover:border-amber/50 transition-colors"
       >
         <h3 class="font-display font-bold uppercase text-display-sm text-ink group-hover:text-amber transition-colors">
           {{ brand.name }}
