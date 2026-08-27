@@ -5,12 +5,9 @@
         Auto Pregled
       </NuxtLink>
       <nav class="flex items-center gap-6">
-        <NuxtLink to="/cars" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">
-          Automobili
-        </NuxtLink>
-        <NuxtLink to="/brands" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">
-          Marke
-        </NuxtLink>
+        <NuxtLink to="/cars" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">Automobili</NuxtLink>
+        <NuxtLink to="/brands" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">Marke</NuxtLink>
+        <NuxtLink to="/uporedi" class="font-mono text-eyebrow uppercase text-ink/60 hover:text-amber transition-colors">Uporedi</NuxtLink>
       </nav>
     </div>
   </header>

@@ -1,10 +1,30 @@
 <script setup lang="ts">
 import type { CarSummary } from '~/types/car'
-defineProps<{ car: CarSummary }>()
+
+const props = defineProps<{ car: CarSummary }>()
+const { toggle, isSelected } = useCompare()
+
+function handleToggleCompare(e: MouseEvent) {
+  e.preventDefault()
+  e.stopPropagation()
+  toggle({ slug: props.car.slug, label: `${props.car.brand} ${props.car.model}` })
+}
 </script>
 
 <template>
-  <NuxtLink :to="`/cars/${car.slug}`" class="group block border border-white/10 bg-surface overflow-hidden hover:border-amber/50 transition-colors">
+  <NuxtLink
+    :to="`/cars/${car.slug}`"
+    class="group block border border-white/10 bg-surface overflow-hidden hover:border-amber/50 transition-colors relative"
+  >
+    <button
+      @click="handleToggleCompare"
+      class="absolute top-3 right-3 z-10 w-6 h-6 flex items-center justify-center border transition-colors"
+      :class="isSelected(car.slug) ? 'bg-amber border-amber text-canvas' : 'bg-canvas/80 border-white/20 text-ink/60 hover:border-amber/50'"
+      :title="isSelected(car.slug) ? 'Ukloni iz poređenja' : 'Dodaj za poređenje'"
+    >
+      <span class="text-xs leading-none">✓</span>
+    </button>
+
     <div class="relative h-36 bg-gradient-to-br from-[#1F232B] to-[#0C0E12] overflow-hidden">
       <img
         v-if="car.main_thumbnail_url"
