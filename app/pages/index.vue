@@ -9,11 +9,11 @@ const router = useRouter()
 const searchQuery = ref('')
 
 function handleSearch() {
-  router.push({ path: '/cars', query: searchQuery.value ? { q: searchQuery.value } : {} })
+  router.push({ path: '/automobili', query: searchQuery.value ? { q: searchQuery.value } : {} })
 }
 
 function handleQuickPick(pick: string) {
-  router.push({ path: '/cars', query: { q: pick } })
+  router.push({ path: '/automobili', query: { q: pick } })
 }
 </script>
 
@@ -60,7 +60,7 @@ function handleQuickPick(pick: string) {
           <span class="font-mono text-eyebrow text-steel">IZDVOJENO</span>
           <h2 class="font-display font-bold uppercase text-display-sm text-ink mt-1">Popularni modeli</h2>
         </div>
-        <NuxtLink to="/cars" class="font-mono text-data-sm text-amber hover:underline">Prikaži sve →</NuxtLink>
+        <NuxtLink to="/automobili" class="font-mono text-data-sm text-amber hover:underline">Prikaži sve →</NuxtLink>
       </div>
 
       <div v-if="cars.length === 0" class="text-ink/50 font-mono text-data">Trenutno nema objavljenih automobila.</div>

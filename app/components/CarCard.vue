@@ -13,7 +13,7 @@ function handleToggleCompare(e: MouseEvent) {
 
 <template>
   <NuxtLink
-    :to="`/cars/${car.slug}`"
+    :to="`/automobili/${car.slug}`"
     class="group block border border-white/10 bg-surface overflow-hidden hover:border-amber/50 transition-colors relative"
   >
     <button
