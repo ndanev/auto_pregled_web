@@ -17,6 +17,7 @@ export default {
         steel: '#5B6B85',
         diagnostic: '#2F8F5B',
         rust: '#B23A22',
+        'amber-light': '#F0B429',
       },
       fontFamily: {
         display: ['"Big Shoulders Display"', 'sans-serif'],
@@ -36,6 +37,15 @@ export default {
         'display-md': ['2.75rem', { lineHeight: '0.9', letterSpacing: '-0.01em' }],
         'display-lg': ['3.5rem', { lineHeight: '0.88', letterSpacing: '-0.01em' }],
         'display-xl': ['4.5rem', { lineHeight: '0.86', letterSpacing: '-0.01em' }],
+      },
+      keyframes: {
+        scan: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(180px)' },
+        },
+      },
+      animation: {
+        scan: 'scan 3.5s ease-in-out infinite',
       },
     },
   },
