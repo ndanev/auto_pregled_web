@@ -103,13 +103,13 @@ useHead({
       <section>
         <SectionLabel text="ZA KOGA JE" />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="border border-black/10 bg-surface p-5">
+          <div class="border border-black/10 bg-surface rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-diagnostic">IDEALNO ZA</span>
             <ul class="mt-3 space-y-1.5 text-body-sm text-ink/70">
               <li v-for="item in analysis.target_audience.ideal_for" :key="item">{{ item }}</li>
             </ul>
           </div>
-          <div class="border border-black/10 bg-surface p-5">
+          <div class="border border-black/10 bg-surface rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-rust">NIJE PREPORUČLJIVO ZA</span>
             <ul class="mt-3 space-y-1.5 text-body-sm text-ink/70">
               <li v-for="item in analysis.target_audience.not_recommended_for" :key="item">{{ item }}</li>
@@ -121,7 +121,7 @@ useHead({
       <section>
         <SectionLabel text="PREDNOSTI I MANE" />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="border border-black/10 bg-surface p-5">
+          <div class="border border-black/10 bg-surface rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-diagnostic">PREDNOSTI</span>
             <ul class="mt-3 space-y-3">
               <li v-for="item in analysis.strengths" :key="item.title">
@@ -130,7 +130,7 @@ useHead({
               </li>
             </ul>
           </div>
-          <div class="border border-black/10 bg-surface p-5">
+          <div class="border border-black/10 bg-surface rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-rust">MANE</span>
             <ul class="mt-3 space-y-3">
               <li v-for="item in analysis.weaknesses" :key="item.title">
@@ -147,7 +147,7 @@ useHead({
         <p v-if="isInsufficient('reliability')" class="font-mono text-data-sm text-amber mb-3">
           Podaci o pouzdanosti su procena zasnovana na ograničenim informacijama.
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center border border-black/10 bg-surface p-6">
+        <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center border border-black/10 bg-surface rounded-2xl p-6">
           <RatingGauge :rating="analysis.reliability.score" label="POUZDANOST" :size="160" />
           <div class="space-y-4 w-full">
             <ScoreBar label="MOTOR" :score="analysis.reliability.engine_reliability" />
@@ -160,7 +160,7 @@ useHead({
       <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <SectionLabel text="POTROŠNJA GORIVA" />
-          <div class="border border-black/10 bg-surface p-5 grid grid-cols-3 gap-4">
+          <div class="border border-black/10 bg-surface rounded-2xl p-5 grid grid-cols-3 gap-4">
             <div v-for="row in [
               { label: 'GRAD', value: analysis.fuel_consumption.city },
               { label: 'PUT', value: analysis.fuel_consumption.highway },
@@ -174,7 +174,7 @@ useHead({
 
         <div>
           <SectionLabel text="TROŠKOVI ODRŽAVANJA" />
-          <div class="border border-black/10 bg-surface p-5">
+          <div class="border border-black/10 bg-surface rounded-2xl p-5">
             <div class="flex items-baseline justify-between">
               <span class="font-mono text-data-sm text-ink/50">Nivo troškova</span>
               <span class="font-mono text-data text-amber">{{ costLevelLabels[analysis.maintenance.cost_level] }}</span>
@@ -189,7 +189,7 @@ useHead({
 
       <section v-if="analysis.maintenance.common_repairs.length > 0">
         <SectionLabel text="NAJČEŠĆI KVAROVI" />
-        <div class="border border-black/10 divide-y divide-black/10">
+        <div class="rounded-2xl border border-black/10 divide-y divide-black/10 overflow-hidden">
           <div v-for="repair in analysis.maintenance.common_repairs" :key="repair.problem" class="flex items-center justify-between px-5 py-3 bg-surface">
             <span class="text-body text-ink">{{ repair.problem }}</span>
             <span class="font-mono text-data-sm text-ink/60">{{ repair.estimated_cost }}</span>
@@ -233,7 +233,7 @@ useHead({
 
       <section>
         <SectionLabel text="AI ZAKLJUČAK" />
-        <div class="border-l-2 border-amber bg-surface p-6">
+        <div class="rounded-2xl border-l-4 border-amber bg-surface p-6">
           <p class="text-body-lg text-ink/85">{{ analysis.ai_summary.final_verdict }}</p>
         </div>
       </section>

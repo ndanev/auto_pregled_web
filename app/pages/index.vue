@@ -61,10 +61,7 @@ const steps = [
             type="text" placeholder="Pretraži marku ili model, npr. Golf 7"
             class="flex-1 bg-white px-6 py-4 font-mono text-body-sm placeholder:text-black/40 focus:outline-none text-black"
           />
-          <button
-            type="submit"
-            class="bg-[#F0B429] text-black font-mono text-eyebrow font-semibold px-6 hover:bg-[#E0A61F] transition-colors shrink-0"
-          >
+          <button type="submit" class="bg-amber text-ink font-mono text-eyebrow font-semibold px-6 hover:bg-amber-dark transition-colors shrink-0">
             Pretraga
           </button>
         </form>
@@ -93,7 +90,7 @@ const steps = [
           <NuxtLink
             v-for="brand in brands" :key="brand.slug"
             :to="`/marke/${brand.slug}`"
-            class="flex items-center gap-2 border border-black/10 px-4 py-2.5 hover:border-amber/40 transition-colors bg-surface"
+            class="flex items-center gap-2 rounded-full border border-black/10 px-4 py-2.5 hover:border-amber transition-colors bg-surface"
           >
             <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-5 h-5 object-contain" />
             <span class="font-mono text-data-sm text-ink">{{ brand.name }}</span>
@@ -109,7 +106,9 @@ const steps = [
           <span class="font-mono text-eyebrow text-steel">IZDVOJENO</span>
           <h2 class="font-display font-bold uppercase text-display-sm text-ink mt-1">Popularni modeli</h2>
         </div>
-        <NuxtLink to="/automobili" class="font-mono text-data-sm text-amber hover:underline">Prikaži sve →</NuxtLink>
+        <NuxtLink to="/automobili" class="font-mono text-data-sm text-ink font-medium hover:text-amber-dark transition-colors underline decoration-amber decoration-2 underline-offset-4">
+          Prikaži sve →
+        </NuxtLink>
       </div>
 
       <div v-if="cars.length === 0" class="text-ink/50 font-mono text-data">Trenutno nema objavljenih automobila.</div>
@@ -123,8 +122,8 @@ const steps = [
       <div class="mx-auto max-w-6xl px-6 py-14">
         <span class="font-mono text-eyebrow text-steel">KAKO RADI</span>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-          <div v-for="(step, index) in steps" :key="step.title" class="border-t-2 border-ink pt-4">
-            <span class="font-mono text-data-sm text-ink/40">0{{ index + 1 }}</span>
+          <div v-for="(step, index) in steps" :key="step.title" class="rounded-2xl bg-canvas border border-black/10 p-6">
+            <span class="font-mono text-data-sm text-amber-dark font-semibold">0{{ index + 1 }}</span>
             <h3 class="font-display font-bold uppercase text-display-sm text-ink mt-2">{{ step.title }}</h3>
             <p class="text-body-sm text-ink/60 mt-2">{{ step.text }}</p>
           </div>

@@ -29,7 +29,7 @@ function tickPoint(value: number, radius: number) {
         />
       </g>
       <g :style="{ transform: `rotate(${needleAngle}deg)`, transformOrigin: '100px 100px' }" class="transition-transform duration-700 ease-out">
-        <line x1="100" y1="100" x2="100" y2="32" stroke="#161616" stroke-width="3" stroke-linecap="round" />
+        <line x1="100" y1="100" x2="100" y2="32" stroke="#F0B429" stroke-width="3" stroke-linecap="round" />
       </g>
       <circle cx="100" cy="100" r="5" fill="#131417" />
     </svg>

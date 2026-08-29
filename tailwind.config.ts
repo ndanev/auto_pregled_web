@@ -13,11 +13,11 @@ export default {
         canvas: '#FFFFFF',
         surface: '#F4F4F5',
         ink: '#131417',
-        amber: '#161616',
+        amber: '#F0B429',
+        'amber-dark': '#D89A1A',
         steel: '#5B6B85',
         diagnostic: '#2F8F5B',
         rust: '#B23A22',
-        'amber-light': '#F0B429',
       },
       fontFamily: {
         display: ['"Big Shoulders Display"', 'sans-serif'],
@@ -25,7 +25,7 @@ export default {
         mono: ['"Inter"', 'sans-serif'],
       },
       fontSize: {
-        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.025em' }],
+        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.2em' }],
         'data-sm': ['0.8125rem', { lineHeight: '1.4' }],
         data: ['0.9375rem', { lineHeight: '1.4' }],
         'data-lg': ['1.25rem', { lineHeight: '1.2' }],
@@ -37,15 +37,6 @@ export default {
         'display-md': ['2.75rem', { lineHeight: '0.9', letterSpacing: '-0.01em' }],
         'display-lg': ['3.5rem', { lineHeight: '0.88', letterSpacing: '-0.01em' }],
         'display-xl': ['4.5rem', { lineHeight: '0.86', letterSpacing: '-0.01em' }],
-      },
-      keyframes: {
-        scan: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(180px)' },
-        },
-      },
-      animation: {
-        scan: 'scan 3.5s ease-in-out infinite',
       },
     },
   },
