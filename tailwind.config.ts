@@ -25,7 +25,7 @@ export default {
         mono: ['"Inter"', 'sans-serif'],
       },
       fontSize: {
-        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.2em' }],
+        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.025em' }],
         'data-sm': ['0.8125rem', { lineHeight: '1.4' }],
         data: ['0.9375rem', { lineHeight: '1.4' }],
         'data-lg': ['1.25rem', { lineHeight: '1.2' }],

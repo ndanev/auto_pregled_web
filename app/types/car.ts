@@ -13,8 +13,8 @@ export interface CarSummary {
   overall_rating: number | null
   main_image_url: string | null
   main_thumbnail_url: string | null
+  brand_logo_url: string | null
 }
-
 export interface CarAnalysis {
   data_quality: { insufficient_sections: string[] }
   ai_summary: {
@@ -52,4 +52,5 @@ export interface CarDetail extends Omit<CarSummary, 'main_image_url' | 'main_thu
   meta_description: string | null
   analysis: CarAnalysis | null
   images: { url: string; thumbnail_url: string; is_main: boolean }[]
+  brand_logo_url: string | null
 }

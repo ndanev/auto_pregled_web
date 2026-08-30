@@ -1,6 +1,7 @@
 export interface BrandSummary {
   name: string
   slug: string
+  logo_url: string | null
   cars_count: number
 }
 
@@ -13,5 +14,6 @@ export interface BrandModel {
 export interface BrandDetail {
   name: string
   slug: string
+  logo_url: string | null
   models: BrandModel[]
 }

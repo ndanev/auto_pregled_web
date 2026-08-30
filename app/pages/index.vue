@@ -90,7 +90,7 @@ const steps = [
           <NuxtLink
             v-for="brand in brands" :key="brand.slug"
             :to="`/marke/${brand.slug}`"
-            class="flex items-center gap-2 rounded-full border border-black/10 px-4 py-2.5 hover:border-amber transition-colors bg-surface"
+            class="flex items-center gap-2 rounded-full border border-black/10 px-4 py-2.5 hover:border-amber transition-colors"
           >
             <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-5 h-5 object-contain" />
             <span class="font-mono text-data-sm text-ink">{{ brand.name }}</span>
@@ -118,7 +118,7 @@ const steps = [
     </section>
 
     <!-- Kako radi -->
-    <section class="border-t border-black/10 bg-surface">
+    <section class="border-t border-black/10">
       <div class="mx-auto max-w-6xl px-6 py-14">
         <span class="font-mono text-eyebrow text-steel">KAKO RADI</span>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
