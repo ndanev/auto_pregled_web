@@ -3,6 +3,8 @@ const route = useRoute()
 const slug = route.params.slug as string
 
 const { fetchBrandBySlug } = useBrandsApi()
+const { fetchCars } = useCarsApi()
+
 const { data, error } = await useAsyncData(`brand-${slug}`, () => fetchBrandBySlug(slug))
 
 if (error.value) {
@@ -10,6 +12,9 @@ if (error.value) {
 }
 
 const brand = computed(() => data.value!.data)
+
+const { data: carsData } = await useAsyncData(`brand-cars-${slug}`, () => fetchCars({ brandSlug: slug }))
+const cars = computed(() => carsData.value?.data ?? [])
 
 useSeoMeta({
   title: `${brand.value.name} — svi modeli`,
@@ -19,26 +24,25 @@ useSeoMeta({
 
 <template>
   <div class="mx-auto max-w-6xl px-6 py-12">
-    <span class="font-mono text-eyebrow text-steel">MARKA</span>
-    <h1 class="font-display font-extrabold uppercase text-display-lg md:text-display-xl mt-2 text-ink">
-      {{ brand.name }}
-    </h1>
-
-    <div v-if="brand.models.length === 0" class="text-ink/50 font-mono text-data mt-10">
-      Trenutno nema dostupnih modela za ovu marku.
+    <div class="flex items-center gap-5">
+      <div v-if="brand.logo_url" class="w-16 h-16 shrink-0 flex items-center justify-center rounded-2xl border border-black/10 bg-canvas p-2">
+        <img :src="brand.logo_url" :alt="brand.name" class="w-full h-full object-contain" />
+      </div>
+      <div>
+        <span class="font-mono text-eyebrow text-steel">MARKA</span>
+        <h1 class="font-display font-extrabold uppercase text-display-lg md:text-display-xl text-ink leading-none mt-1">
+          {{ brand.name }}
+        </h1>
+      </div>
     </div>
-    <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-10">
-      <NuxtLink
-        v-for="model in brand.models"
-        :key="model.slug"
-        :to="`/automobili?model_slug=${model.slug}`"
-        class="group block border border-black/10 bg-surface p-5 hover:border-amber/50 transition-colors"
-      >
-        <h3 class="font-display font-bold uppercase text-display-sm text-ink group-hover:text-amber transition-colors">
-          {{ model.name }}
-        </h3>
-        <p class="font-mono text-data-sm text-ink/50 mt-2">{{ model.cars_count }} automobila</p>
-      </NuxtLink>
+
+    <p class="font-mono text-data-sm text-ink/50 mt-6">{{ cars.length }} automobila</p>
+
+    <div v-if="cars.length === 0" class="text-ink/50 font-mono text-data mt-10">
+      Trenutno nema objavljenih automobila za ovu marku.
+    </div>
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-6">
+      <CarCard v-for="car in cars" :key="car.slug" :car="car" />
     </div>
   </div>
 </template>

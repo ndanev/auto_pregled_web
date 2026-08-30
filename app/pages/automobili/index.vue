@@ -24,7 +24,7 @@ watch(searchQuery, (value) => {
     <span class="font-mono text-eyebrow text-steel">BAZA VOZILA</span>
     <h1 class="font-display font-extrabold uppercase text-display-md md:text-display-lg mt-2 text-ink">Svi automobili</h1>
 
-    <div class="mt-6 flex max-w-md border border-white/15 bg-surface">
+    <div class="mt-6 flex max-w-md border border-white/15 bg-white">
       <input
         v-model="searchQuery"
         type="text" placeholder="Pretraži marku ili model..."

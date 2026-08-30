@@ -51,6 +51,24 @@ useHead({
         })
       ),
     },
+    {
+      type: 'application/ld+json',
+      innerHTML: computed(() => {
+        if (!analysis.value?.faq || analysis.value.faq.length === 0) return ''
+        return JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: analysis.value.faq.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        })
+      }),
+    },
   ],
 })
 </script>
@@ -95,6 +113,67 @@ useHead({
       <CarGallery :images="car.images" />
     </div>
 
+    <section class="mx-auto max-w-5xl px-6 pt-10">
+      <SectionLabel text="SPECIFIKACIJE" />
+      <div class="rounded-2xl border border-black/10 overflow-hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 divide-black/10">
+          <div class="divide-y divide-black/10">
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Marka</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.brand }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Model</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.model }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Generacija</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.generation }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Godina proizvodnje</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.years }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Karoserija</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.body_type ?? '—' }}</span>
+            </div>
+          </div>
+
+          <div class="divide-y divide-black/10">
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Motor</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.engine }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Gorivo</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.fuel_type }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Zapremina</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.displacement_cc ? `${car.displacement_cc} cm³` : '—' }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Snaga</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.power_hp ? `${car.power_hp} KS` : '—' }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Obrtni moment</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.torque_nm ? `${car.torque_nm} Nm` : '—' }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Menjač</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.transmission }}</span>
+            </div>
+            <div class="flex items-center justify-between px-5 py-3">
+              <span class="font-mono text-data-sm text-ink/50">Pogon</span>
+              <span class="font-mono text-data-sm text-ink">{{ car.drivetrain ?? '—' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div v-if="!analysis" class="mx-auto max-w-5xl px-6 py-14 text-ink/50 font-mono text-data">
       AI analiza za ovaj automobil još nije generisana.
     </div>
@@ -103,13 +182,13 @@ useHead({
       <section>
         <SectionLabel text="ZA KOGA JE" />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="border border-black/10 bg-surface rounded-2xl p-5">
+          <div class="border border-black/10 rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-diagnostic">IDEALNO ZA</span>
             <ul class="mt-3 space-y-1.5 text-body-sm text-ink/70">
               <li v-for="item in analysis.target_audience.ideal_for" :key="item">{{ item }}</li>
             </ul>
           </div>
-          <div class="border border-black/10 bg-surface rounded-2xl p-5">
+          <div class="border border-black/10 rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-rust">NIJE PREPORUČLJIVO ZA</span>
             <ul class="mt-3 space-y-1.5 text-body-sm text-ink/70">
               <li v-for="item in analysis.target_audience.not_recommended_for" :key="item">{{ item }}</li>
@@ -121,7 +200,7 @@ useHead({
       <section>
         <SectionLabel text="PREDNOSTI I MANE" />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="border border-black/10 bg-surface rounded-2xl p-5">
+          <div class="border border-black/10 rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-diagnostic">PREDNOSTI</span>
             <ul class="mt-3 space-y-3">
               <li v-for="item in analysis.strengths" :key="item.title">
@@ -130,7 +209,7 @@ useHead({
               </li>
             </ul>
           </div>
-          <div class="border border-black/10 bg-surface rounded-2xl p-5">
+          <div class="border border-black/10 rounded-2xl p-5">
             <span class="font-mono text-eyebrow text-rust">MANE</span>
             <ul class="mt-3 space-y-3">
               <li v-for="item in analysis.weaknesses" :key="item.title">
@@ -147,7 +226,7 @@ useHead({
         <p v-if="isInsufficient('reliability')" class="font-mono text-data-sm text-amber mb-3">
           Podaci o pouzdanosti su procena zasnovana na ograničenim informacijama.
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center border border-black/10 bg-surface rounded-2xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center border border-black/10 rounded-2xl p-6">
           <RatingGauge :rating="analysis.reliability.score" label="POUZDANOST" :size="160" />
           <div class="space-y-4 w-full">
             <ScoreBar label="MOTOR" :score="analysis.reliability.engine_reliability" />
@@ -160,7 +239,7 @@ useHead({
       <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <SectionLabel text="POTROŠNJA GORIVA" />
-          <div class="border border-black/10 bg-surface rounded-2xl p-5 grid grid-cols-3 gap-4">
+          <div class="border border-black/10 rounded-2xl p-5 grid grid-cols-3 gap-4">
             <div v-for="row in [
               { label: 'GRAD', value: analysis.fuel_consumption.city },
               { label: 'PUT', value: analysis.fuel_consumption.highway },
@@ -174,7 +253,7 @@ useHead({
 
         <div>
           <SectionLabel text="TROŠKOVI ODRŽAVANJA" />
-          <div class="border border-black/10 bg-surface rounded-2xl p-5">
+          <div class="border border-black/10 rounded-2xl p-5">
             <div class="flex items-baseline justify-between">
               <span class="font-mono text-data-sm text-ink/50">Nivo troškova</span>
               <span class="font-mono text-data text-amber">{{ costLevelLabels[analysis.maintenance.cost_level] }}</span>
@@ -190,7 +269,7 @@ useHead({
       <section v-if="analysis.maintenance.common_repairs.length > 0">
         <SectionLabel text="NAJČEŠĆI KVAROVI" />
         <div class="rounded-2xl border border-black/10 divide-y divide-black/10 overflow-hidden">
-          <div v-for="repair in analysis.maintenance.common_repairs" :key="repair.problem" class="flex items-center justify-between px-5 py-3 bg-surface">
+          <div v-for="repair in analysis.maintenance.common_repairs" :key="repair.problem" class="flex items-center justify-between px-5 py-3">
             <span class="text-body text-ink">{{ repair.problem }}</span>
             <span class="font-mono text-data-sm text-ink/60">{{ repair.estimated_cost }}</span>
           </div>
@@ -224,7 +303,7 @@ useHead({
       <section v-if="analysis.alternatives.length > 0">
         <SectionLabel text="ALTERNATIVE" />
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div v-for="alt in analysis.alternatives" :key="alt.model" class="border border-black/10 bg-surface p-4">
+          <div v-for="alt in analysis.alternatives" :key="alt.model" class="border border-black/10 p-4">
             <span class="font-display font-bold uppercase text-display-sm text-ink">{{ alt.model }}</span>
             <p class="text-body-sm text-ink/60 mt-1">{{ alt.reason }}</p>
           </div>
@@ -233,9 +312,14 @@ useHead({
 
       <section>
         <SectionLabel text="AI ZAKLJUČAK" />
-        <div class="rounded-2xl border-l-4 border-amber bg-surface p-6">
+        <div class="rounded-2xl border-l-4 border-amber p-6">
           <p class="text-body-lg text-ink/85">{{ analysis.ai_summary.final_verdict }}</p>
         </div>
+      </section>
+
+      <section v-if="analysis.faq && analysis.faq.length > 0">
+        <SectionLabel text="ČESTA PITANJA" />
+        <FaqAccordion :items="analysis.faq" />
       </section>
     </div>
   </div>

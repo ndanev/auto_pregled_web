@@ -54,7 +54,7 @@ useSeoMeta({
     </h1>
 
     <!-- Birač -->
-    <div v-if="!hasSelection" class="mt-10 border border-black/10 bg-surface p-6">
+    <div v-if="!hasSelection" class="mt-10 border border-black/10 bg-white p-6">
       <p class="font-mono text-data-sm text-ink/60 mb-6">Izaberi dva automobila za poređenje.</p>
       <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 items-end">
         <div>
@@ -120,7 +120,7 @@ useSeoMeta({
               { label: 'Menjač', a: carA!.transmission, b: carB!.transmission },
             ]"
             :key="row.label"
-            class="grid grid-cols-3 px-5 py-3 bg-surface items-center"
+            class="grid grid-cols-3 px-5 py-3 bg-white items-center"
           >
             <span class="font-mono text-data-sm text-ink">{{ row.a }}</span>
             <span class="font-mono text-eyebrow text-ink/40 text-center">{{ row.label }}</span>
@@ -133,12 +133,12 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="POUZDANOST" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border border-black/10 bg-surface p-5 space-y-4">
+            <div class="border border-black/10 bg-white p-5 space-y-4">
               <ScoreBar label="MOTOR" :score="carA!.analysis.reliability.engine_reliability" />
               <ScoreBar label="MENJAČ" :score="carA!.analysis.reliability.transmission_reliability" />
               <ScoreBar label="ELEKTRONIKA" :score="carA!.analysis.reliability.electronics_reliability" />
             </div>
-            <div class="border border-black/10 bg-surface p-5 space-y-4">
+            <div class="border border-black/10 bg-white p-5 space-y-4">
               <ScoreBar label="MOTOR" :score="carB!.analysis.reliability.engine_reliability" />
               <ScoreBar label="MENJAČ" :score="carB!.analysis.reliability.transmission_reliability" />
               <ScoreBar label="ELEKTRONIKA" :score="carB!.analysis.reliability.electronics_reliability" />
@@ -149,10 +149,10 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="POTROŠNJA GORIVA (KOMBINOVANO)" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border border-black/10 bg-surface p-5 text-center">
+            <div class="border border-black/10 bg-white p-5 text-center">
               <span class="font-mono text-data-xl text-ink">{{ carA!.analysis.fuel_consumption.combined }}</span>
             </div>
-            <div class="border border-black/10 bg-surface p-5 text-center">
+            <div class="border border-black/10 bg-white p-5 text-center">
               <span class="font-mono text-data-xl text-ink">{{ carB!.analysis.fuel_consumption.combined }}</span>
             </div>
           </div>
@@ -161,10 +161,10 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="AI ZAKLJUČCI" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border-l-2 border-amber bg-surface p-5">
+            <div class="border-l-2 border-amber bg-white p-5">
               <p class="text-body-sm text-ink/80">{{ carA!.analysis.ai_summary.final_verdict }}</p>
             </div>
-            <div class="border-l-2 border-amber bg-surface p-5">
+            <div class="border-l-2 border-amber bg-white p-5">
               <p class="text-body-sm text-ink/80">{{ carB!.analysis.ai_summary.final_verdict }}</p>
             </div>
           </div>

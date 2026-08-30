@@ -12,7 +12,7 @@ const activeImage = computed(() => props.images[activeIndex.value])
 
 <template>
   <div v-if="images.length > 0">
-    <div class="rounded-2xl border border-black/10 bg-surface overflow-hidden">
+    <div class="rounded-2xl border border-black/10 bg-white overflow-hidden">
       <img :src="activeImage.url" alt="" class="w-full max-h-[480px] object-cover" />
     </div>
 

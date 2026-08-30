@@ -42,6 +42,7 @@ export interface CarAnalysis {
   buying_guide: { recommended_engines: string[]; engines_to_avoid: string[]; inspection_points: string[] }
   alternatives: { model: string; reason: string }[]
   seo: { title: string; description: string; keywords: string[] }
+  faq: { question: string; answer: string }[]
 }
 
 export interface CarDetail extends Omit<CarSummary, 'main_image_url' | 'main_thumbnail_url'> {
