@@ -54,14 +54,14 @@ useSeoMeta({
     </h1>
 
     <!-- Birač -->
-    <div v-if="!hasSelection" class="mt-10 border border-black/10 bg-white p-6">
+    <div v-if="!hasSelection" class="mt-10 border border-white/10 p-6">
       <p class="font-mono text-data-sm text-ink/60 mb-6">Izaberi dva automobila za poređenje.</p>
       <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 items-end">
         <div>
           <label class="block font-mono text-eyebrow text-ink/40 mb-2">PRVI AUTOMOBIL</label>
           <select
             v-model="pickerA"
-            class="w-full bg-canvas border border-white/15 px-3 py-2.5 font-mono text-data-sm text-ink focus:outline-none focus:border-amber"
+            class="w-full bg-surface border border-white/15 px-3 py-2.5 font-mono text-data-sm text-ink focus:outline-none focus:border-amber"
           >
             <option :value="undefined" disabled>Izaberi automobil</option>
             <option v-for="car in allCars" :key="car.slug" :value="car.slug" :disabled="car.slug === pickerB">
@@ -76,7 +76,7 @@ useSeoMeta({
           <label class="block font-mono text-eyebrow text-ink/40 mb-2">DRUGI AUTOMOBIL</label>
           <select
             v-model="pickerB"
-            class="w-full bg-canvas border border-white/15 px-3 py-2.5 font-mono text-data-sm text-ink focus:outline-none focus:border-amber"
+            class="w-full bg-surface border border-white/15 px-3 py-2.5 font-mono text-data-sm text-ink focus:outline-none focus:border-amber"
           >
             <option :value="undefined" disabled>Izaberi automobil</option>
             <option v-for="car in allCars" :key="car.slug" :value="car.slug" :disabled="car.slug === pickerA">
@@ -97,7 +97,7 @@ useSeoMeta({
 
     <!-- Rezultati -->
     <template v-else-if="bothLoaded">
-      <div class="grid grid-cols-2 gap-8 mt-10 border-b border-black/10 pb-10">
+      <div class="grid grid-cols-2 gap-8 mt-10 border-b border-white/10 pb-10">
         <div class="flex flex-col items-center">
           <RatingGauge :rating="carA!.overall_rating ?? 0" label="AI OCENA" :size="180" />
           <span class="font-mono text-data text-ink/60 mt-2">{{ carA!.engine }} · {{ carA!.power_hp }} KS</span>
@@ -110,7 +110,7 @@ useSeoMeta({
 
       <div class="mt-10">
         <SectionLabel text="SPECIFIKACIJE" />
-        <div class="border border-black/10 divide-y divide-black/10">
+        <div class="border border-white/10 divide-y divide-white/10">
           <div
             v-for="row in [
               { label: 'Generacija', a: carA!.generation, b: carB!.generation },
@@ -133,12 +133,12 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="POUZDANOST" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border border-black/10 bg-white p-5 space-y-4">
+            <div class="border border-white/10 bg-white p-5 space-y-4">
               <ScoreBar label="MOTOR" :score="carA!.analysis.reliability.engine_reliability" />
               <ScoreBar label="MENJAČ" :score="carA!.analysis.reliability.transmission_reliability" />
               <ScoreBar label="ELEKTRONIKA" :score="carA!.analysis.reliability.electronics_reliability" />
             </div>
-            <div class="border border-black/10 bg-white p-5 space-y-4">
+            <div class="border border-white/10 bg-white p-5 space-y-4">
               <ScoreBar label="MOTOR" :score="carB!.analysis.reliability.engine_reliability" />
               <ScoreBar label="MENJAČ" :score="carB!.analysis.reliability.transmission_reliability" />
               <ScoreBar label="ELEKTRONIKA" :score="carB!.analysis.reliability.electronics_reliability" />
@@ -149,10 +149,10 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="POTROŠNJA GORIVA (KOMBINOVANO)" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border border-black/10 bg-white p-5 text-center">
+            <div class="border border-white/10 bg-white p-5 text-center">
               <span class="font-mono text-data-xl text-ink">{{ carA!.analysis.fuel_consumption.combined }}</span>
             </div>
-            <div class="border border-black/10 bg-white p-5 text-center">
+            <div class="border border-white/10 bg-white p-5 text-center">
               <span class="font-mono text-data-xl text-ink">{{ carB!.analysis.fuel_consumption.combined }}</span>
             </div>
           </div>

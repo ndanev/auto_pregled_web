@@ -53,7 +53,7 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
     <span class="font-mono text-eyebrow text-steel">BAZA VOZILA</span>
     <h1 class="font-display font-extrabold uppercase text-display-md md:text-display-lg mt-2 text-ink">Svi automobili</h1>
 
-    <div class="mt-6 flex max-w-md rounded-full border border-black/15 bg-canvas overflow-hidden">
+    <div class="mt-6 flex max-w-md rounded-full border border-white/15 bg-surface overflow-hidden">
       <input
         v-model="searchQuery"
         type="text" placeholder="Pretraži marku ili model..."
@@ -64,7 +64,7 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
     <div class="mt-5 flex flex-wrap items-center gap-3">
       <select
         v-model="bodyType"
-        class="font-mono text-data-sm rounded-full border border-black/15 bg-canvas px-4 py-2 text-ink focus:outline-none focus:border-amber"
+        class="font-mono text-data-sm rounded-full border border-white/15 bg-surface px-4 py-2 text-ink focus:outline-none focus:border-amber"
       >
         <option value="">Karoserija</option>
         <option v-for="cat in BODY_TYPE_CATEGORIES" :key="cat.value" :value="cat.value">{{ cat.label }}</option>
@@ -72,7 +72,7 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
 
       <select
         v-model="fuelType"
-        class="font-mono text-data-sm rounded-full border border-black/15 bg-canvas px-4 py-2 text-ink focus:outline-none focus:border-amber"
+        class="font-mono text-data-sm rounded-full border border-white/15 bg-surface px-4 py-2 text-ink focus:outline-none focus:border-amber"
       >
         <option value="">Gorivo</option>
         <option v-for="opt in FUEL_TYPE_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
@@ -80,7 +80,7 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
 
       <select
         v-model="transmission"
-        class="font-mono text-data-sm rounded-full border border-black/15 bg-canvas px-4 py-2 text-ink focus:outline-none focus:border-amber"
+        class="font-mono text-data-sm rounded-full border border-white/15 bg-surface px-4 py-2 text-ink focus:outline-none focus:border-amber"
       >
         <option value="">Menjač</option>
         <option v-for="opt in TRANSMISSION_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>

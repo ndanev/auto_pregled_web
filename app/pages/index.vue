@@ -39,17 +39,17 @@ const steps = [
   <div>
     <!-- Hero -->
     <section
-      class="relative bg-ink text-canvas bg-cover bg-center"
+      class="relative from-canvas via-canvas/80 to-canvas/50 bg-cover bg-center"
       style="background-image: url('/images/hero-bg.jpg');"
     >
-      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/40"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/70 to-canvas/40"></div>
 
       <div class="relative mx-auto max-w-3xl px-6 py-24 md:py-32 text-center">
         <span class="font-mono text-eyebrow text-canvas/70">AI ANALIZA VOZILA</span>
-        <h1 class="font-display font-extrabold uppercase leading-[0.9] text-display-lg md:text-display-xl mt-4 text-canvas drop-shadow-lg">
+        <h1 class="font-display font-extrabold uppercase leading-[0.9] text-display-lg md:text-display-xl mt-4x drop-shadow-lg">
           Da li je ovo<br /><span class="text-amber">dobar izbor?</span>
         </h1>
-        <p class="mt-6 text-body-lg text-canvas/85 max-w-xl mx-auto drop-shadow">
+        <p class="mt-6 text-body-lg max-w-xl mx-auto drop-shadow">
           Pouzdanost, potrošnja, najčešći kvarovi i AI zaključak — strukturirano,
           na jednom mestu, pre nego što odlučiš.
         </p>
@@ -69,7 +69,7 @@ const steps = [
           <button
             v-for="cat in BODY_TYPE_CATEGORIES" :key="cat.value"
             @click="handleBodyType(cat.value)"
-            class="font-mono text-data-sm px-4 py-2 rounded-full border border-canvas/30 bg-ink/20 backdrop-blur-sm text-canvas/85 hover:border-amber/70 hover:text-amber transition-colors"
+            class="font-mono text-data-sm px-4 py-2 rounded-full border border-canvas/30 bg-ink/20 backdrop-blur-sm hover:border-amber/70 hover:text-amber transition-colors"
           >
             {{ cat.label }}
           </button>
@@ -82,16 +82,16 @@ const steps = [
     </section>
 
     <!-- Marke -->
-    <section v-if="brands.length > 0" class="border-b border-black/10">
+    <section v-if="brands.length > 0" class="border-b border-white/10">
       <div class="mx-auto max-w-6xl px-6 py-10">
         <span class="font-mono text-eyebrow text-steel">PRETRAŽI PO MARCI</span>
         <div class="mt-5 flex flex-wrap gap-3">
           <NuxtLink
             v-for="brand in brands" :key="brand.slug"
             :to="`/marke/${brand.slug}`"
-            class="flex items-center gap-2 rounded-full border border-black/10 px-4 py-2.5 hover:border-amber transition-colors bg-canvas"
+            class="flex items-center gap-2 rounded-full border border-white/10 px-4 py-2.5 hover:border-amber transition-colors bg-surface"
           >
-            <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-5 h-5 object-contain" />
+            <!-- <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-5 h-5 object-contain" /> -->
             <span class="font-mono text-data-sm text-ink">{{ brand.name }}</span>
           </NuxtLink>
         </div>
@@ -113,14 +113,14 @@ const steps = [
     </section>
 
     <!-- Uporedi CTA -->
-    <section class="bg-ink text-canvas">
+    <section class="bg-surface text-ink">
       <div class="mx-auto max-w-6xl px-6 py-14 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
         <div>
           <span class="font-mono text-eyebrow text-canvas/50">NEODLUČAN?</span>
-          <h2 class="font-display font-bold uppercase text-display-sm text-canvas mt-1">
+          <h2 class="font-display font-bold uppercase text-display-sm text-white mt-1">
             Uporedi dva automobila jedan pored drugog
           </h2>
-          <p class="text-body-sm text-canvas/60 mt-2 max-w-md">
+          <p class="text-body-sm mt-2 max-w-md">
             Pouzdanost, potrošnja i AI zaključak — sve na jednom ekranu, pre nego što odlučiš.
           </p>
         </div>
@@ -152,11 +152,11 @@ const steps = [
     </section>
 
     <!-- Kako radi -->
-    <section class="border-t border-black/10">
+    <section class="border-t border-white/10">
       <div class="mx-auto max-w-6xl px-6 py-14">
         <span class="font-mono text-eyebrow text-steel">KAKO RADI</span>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <div v-for="(step, index) in steps" :key="step.title" class="rounded-2xl border border-black/10 bg-canvas p-6">
+          <div v-for="(step, index) in steps" :key="step.title" class="rounded-2xl border border-white/10 bg-surface p-6">
             <span class="font-mono text-data-sm text-amber-dark font-semibold">0{{ index + 1 }}</span>
             <h3 class="font-display font-bold uppercase text-display-sm text-ink mt-2">{{ step.title }}</h3>
             <p class="text-body-sm text-ink/60 mt-2">{{ step.text }}</p>
@@ -166,7 +166,7 @@ const steps = [
     </section>
 
     <!-- O AI analizi -->
-    <section class="border-t border-black/10 bg-surface">
+    <section class="border-t border-white/10 bg-surface">
       <div class="mx-auto max-w-3xl px-6 py-14 text-center">
         <span class="font-mono text-eyebrow text-steel">METODOLOGIJA</span>
         <h2 class="font-display font-bold uppercase text-display-sm text-ink mt-2">Kako nastaje AI analiza</h2>

@@ -17,7 +17,7 @@ const brands = computed(() => data.value?.data ?? [])
       v-for="brand in brands"
       :key="brand.slug"
       :to="`/marke/${brand.slug}`"
-      class="group flex flex-col items-center text-center rounded-2xl border border-black/10 p-6 hover:border-amber transition-colors"
+      class="group flex flex-col items-center text-center rounded-2xl border border-white/10 p-6 hover:border-amber transition-colors"
     >
       <div class="w-14 h-14 flex items-center justify-center mb-3">
         <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-full h-full object-contain" />

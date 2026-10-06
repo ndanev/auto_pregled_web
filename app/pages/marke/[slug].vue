@@ -25,7 +25,7 @@ useSeoMeta({
 <template>
   <div class="mx-auto max-w-6xl px-6 py-12">
     <div class="flex items-center gap-5">
-      <div v-if="brand.logo_url" class="w-16 h-16 shrink-0 flex items-center justify-center rounded-2xl border border-black/10 bg-canvas p-2">
+      <div v-if="brand.logo_url" class="w-16 h-16 shrink-0 flex items-center justify-center rounded-2xl border border-white/10 bg-surface p-2">
         <img :src="brand.logo_url" :alt="brand.name" class="w-full h-full object-contain" />
       </div>
       <div>

@@ -10,14 +10,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: '#FFFFFF',
-        surface: '#F4F4F5',
-        ink: '#131417',
-        amber: '#F0B429',
-        'amber-dark': '#D89A1A',
-        steel: '#5B6B85',
-        diagnostic: '#2F8F5B',
-        rust: '#B23A22',
+        canvas: '#121312',
+        surface: '#0d0d0d',
+        ink: '#F4F6F5',
+        amber: '#1763f0',
+        'amber-dark': '#1763f0',
+        steel: '#8FA3B0',
+        diagnostic: '#4FB380',
+        rust: '#E07A5F',
       },
       fontFamily: {
         display: ['"Big Shoulders Display"', 'sans-serif'],
@@ -25,7 +25,7 @@ export default {
         mono: ['"Inter"', 'sans-serif'],
       },
       fontSize: {
-        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.025em' }],
+        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.2em' }],
         'data-sm': ['0.8125rem', { lineHeight: '1.4' }],
         data: ['0.9375rem', { lineHeight: '1.4' }],
         'data-lg': ['1.25rem', { lineHeight: '1.2' }],
