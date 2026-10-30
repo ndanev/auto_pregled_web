@@ -5,7 +5,7 @@ import type { CarDetail } from '~/types/car'
  * i strukturirani podaci (JSON-LD) koje Google koristi za bogatije rezultate pretrage.
  */
 export function useCarSeo(car: Ref<CarDetail>) {
-  const name = computed(() => `${car.value.brand} ${car.value.model}`)
+  const name = computed(() => carName(car.value))
   const description = computed(() => car.value.meta_description || car.value.analysis?.ai_summary.short_description)
   const image = computed(() => car.value.images[0]?.url)
 

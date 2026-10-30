@@ -40,13 +40,18 @@ app/
 │   ├── automobili/[slug].vue     /automobili/:slug    detalj automobila
 │   ├── marke/index.vue           /marke               sve marke
 │   ├── marke/[slug].vue          /marke/:slug         automobili jedne marke
-│   └── uporedi/index.vue         /uporedi?a=…&b=…     poređenje dva automobila
+│   ├── uporedi/index.vue         /uporedi?a=…&b=…     poređenje dva automobila
+│   ├── vodic.vue                 /vodic               vodič za kupovinu, korak po korak
+│   ├── recnik.vue                /recnik              rečnik pojmova (DPF, DSG…)
+│   └── kako-ocenjujemo.vue       /kako-ocenjujemo     metodologija i značenje ocena
 │
 ├── components/               Vue komponente (automatski uvezene, bez import-a)
 │   ├── car-detail/               sekcije stranice automobila  → <CarDetailHero>, <CarDetailCosts>…
 │   ├── home/                     blokovi početne stranice     → <HomeHero>, <HomeCompareCta>
-│   ├── compare/                  delovi stranice poređenja    → <CompareFuelValue>
+│   ├── compare/                  birač i rezultat poređenja   → <ComparePicker>, <CompareResults>, <CompareRow>…
 │   └── *.vue                     deljene komponente           → <CarCard>, <ScoreBar>, <TheHeader>…
+│                                 za dugačke stranice: <PageHeader>, <SectionNav>, <ContentSection>,
+│                                 <BulletList>, <NumberedList>, <InfoCardGrid>
 │
 ├── composables/              Logika koja se deli između komponenti (useNešto)
 │   ├── useApi.ts                 HTTP klijent ka backend-u
@@ -57,6 +62,9 @@ app/
 │
 ├── utils/                    Čiste pomoćne funkcije i konstante (automatski uvezene)
 │   ├── carFormat.ts              formatiranje ocena, oznaka, čitanje brojeva iz AI teksta
+│   ├── glossary.ts               sadržaj rečnika + findGlossaryTerm()
+│   ├── inspection.ts             opšti spisak za pregled (početna i /vodic)
+│   ├── compare.ts                ko je bolji u kom redu na /uporedi + predlozi poređenja
 │   ├── carFilters.ts             opcije za gorivo i menjač
 │   └── bodyTypeCategories.ts     opcije za karoseriju
 │
@@ -119,6 +127,18 @@ Najmanja veličina teksta je 14px (`text-data-sm`); za opise i savete koristi `t
 
 Za boju ocene koristi `scoreTone(score)` umesto ručnog biranja — tako sve ocene na sajtu imaju iste pragove.
 
+### Dugmad i linkovi
+
+Za dugmad i linkove koristi gotove klase iz `assets/css/tailwind.css` umesto da ponavljaš Tailwind klase:
+
+| Klasa | Izgled | Primer |
+|---|---|---|
+| `btn-primary` | narandžasto dugme — glavna akcija | `<NuxtLink to="/automobili" class="btn-primary">Pogledaj automobile</NuxtLink>` |
+| `btn-secondary` | dugme sa okvirom — sporedna akcija | `<button class="btn-secondary">Počni ispočetka</button>` |
+| `link-underline` | tekst sa narandžastom linijom ispod | `<NuxtLink class="text-body-sm link-underline">Prikaži sve →</NuxtLink>` |
+
+Za pun naziv automobila koristi `carName(car)` ("Renault Kadjar"), a za sortiranje po oceni `sortByRating(cars)`.
+
 ### Širina stranice
 
 Svaki blok sadržaja koristi klasu `site-container` (definisana u `assets/css/tailwind.css`):
@@ -132,9 +152,20 @@ pun ekran sa malim razmakom na telefonu, 80% širine na desktopu, najviše 1800p
 
 **…dodam novu sekciju na stranicu automobila**
 
-1. Napravi `components/car-detail/MojaSekcija.vue` i umotaj sadržaj u `<CarDetailSection id="moja-sekcija" title="Naslov">`.
+1. Napravi `components/car-detail/MojaSekcija.vue` i umotaj sadržaj u `<ContentSection id="moja-sekcija" title="Naslov">`.
 2. Dodaj `<CarDetailMojaSekcija :analysis="analysis" />` u `pages/automobili/[slug].vue`.
 3. Dodaj `{ id: 'moja-sekcija', label: 'Naslov' }` u `navItems` u istoj stranici, da se pojavi u navigaciji.
+
+**…dodam pojam u rečnik**
+
+Dodaj objekat u `GLOSSARY` u `utils/glossary.ts`. Stranica `/recnik` ga prikazuje automatski, a u sekciji
+"Poznati problemi" na stranici automobila pojaviće se link ka njemu kad tekst kvara sadrži neku od `keywords`
+(mala slova, može i deo reči — npr. `'turbin'` pogađa i "turbina" i "turbine").
+
+**…dodam novu sadržajnu stranicu (kao vodič)**
+
+Napravi fajl u `pages/` i složi ga od `<PageHeader>`, `<SectionNav>` i `<ContentSection>` — pogledaj `pages/vodic.vue`
+kao primer. Ne zaboravi link u futeru (`components/TheFooter.vue`) i adresu u `server/routes/sitemap.xml.ts`.
 
 **…dodam novu opciju filtera (npr. novo gorivo)**
 

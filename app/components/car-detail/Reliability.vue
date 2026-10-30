@@ -24,7 +24,7 @@ const showDriving = computed(() => !!props.analysis.driving_experience && !hasIn
 </script>
 
 <template>
-  <CarDetailSection
+  <ContentSection
     id="pouzdanost" title="Pouzdanost"
     intro="Ocene od 1 do 10 na osnovu poznatih problema za ovaj motor, menjač i elektroniku."
   >
@@ -50,5 +50,5 @@ const showDriving = computed(() => !!props.analysis.driving_experience && !hasIn
         <ScoreBar v-for="row in drivingRows" :key="row.label" :label="row.label" :score="row.score" />
       </div>
     </div>
-  </CarDetailSection>
+  </ContentSection>
 </template>

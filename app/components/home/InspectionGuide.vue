@@ -3,27 +3,7 @@
 // Koristi istu komponentu kao spisak na stranici automobila, samo sa opštim stavkama.
 // Za spisak specifičan za model, vidi sekciju "Pre kupovine" na stranici automobila.
 
-const INSPECTION_POINTS = [
-  'Servisna knjižica i računi — da li se servisi poklapaju sa kilometražom',
-  'Kilometraža — uporedi je sa istrošenošću volana, pedala i sedišta vozača',
-  'VIN broj — proveri istoriju vozila (udesi, krađa, uvoz)',
-  'Karoserija — razlike u nijansi boje i neravni razmaci između delova ukazuju na popravljan udes',
-  'Korozija na pragovima, podvozju i oko blatobrana',
-  'Hladan start motora — dim iz auspuha, čudni zvuci, neujednačen rad u leru',
-  'Curenje ulja ili tečnosti ispod motora i menjača',
-  'Lampice na instrument tabli — sve moraju da se ugase posle paljenja motora',
-  'Test vožnja — kočenje, menjanje brzina, vibracije i da li auto vuče u stranu',
-  'Gume — dubina šare i ravnomerno trošenje (neravnomerno može značiti problem sa trapom)',
-  'Papiri — saobraćajna dozvola i da li je prodavac stvarni vlasnik',
-  'Nezavisan pregled kod mehaničara pre bilo kakve uplate',
-]
-
-const WHAT_TO_BRING = [
-  { title: 'Baterijska lampa', text: 'za pogled ispod auta i u motorni prostor' },
-  { title: 'Papirna maramica', text: 'za proveru boje i čistoće ulja na šipki' },
-  { title: 'OBD čitač', text: 'jeftin uređaj koji pokazuje obrisane greške u računaru' },
-  { title: 'Još jedna osoba', text: 'da posmatra auspuh i svetla dok ti voziš' },
-]
+// Stavke spiska su u utils/inspection.ts, jer ih koristi i stranica /vodic.
 </script>
 
 <template>
@@ -49,7 +29,16 @@ const WHAT_TO_BRING = [
         </ul>
       </div>
 
-      <InspectionChecklist :items="INSPECTION_POINTS" storage-key="checklist:opsti-pregled" title="Opšti pregled polovnog automobila" />
+      <div>
+        <InspectionChecklist
+          :items="GENERAL_INSPECTION_POINTS"
+          :storage-key="GENERAL_INSPECTION_STORAGE_KEY"
+          title="Opšti pregled polovnog automobila"
+        />
+        <NuxtLink to="/vodic" class="mt-4 inline-block text-body-sm link-underline">
+          Ceo vodič za kupovinu, korak po korak →
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>

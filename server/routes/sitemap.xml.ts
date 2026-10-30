@@ -13,6 +13,9 @@ export default defineEventHandler(async (event) => {
     { loc: `${siteUrl}/automobili`, priority: '0.8' },
     { loc: `${siteUrl}/marke`, priority: '0.7' },
     { loc: `${siteUrl}/uporedi`, priority: '0.6' },
+    { loc: `${siteUrl}/vodic`, priority: '0.8' },
+    { loc: `${siteUrl}/recnik`, priority: '0.7' },
+    { loc: `${siteUrl}/kako-ocenjujemo`, priority: '0.5' },
   ]
 
   const carUrls = carsResponse.data.map((car) => ({

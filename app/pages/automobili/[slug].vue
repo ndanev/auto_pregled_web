@@ -55,18 +55,19 @@ const updatedAt = computed(() => formatDate(analysis.value?.meta?.generated_at))
           <CarDetailBuyingGuide
             :guide="analysis.buying_guide"
             :car-slug="car.slug"
-            :checklist-title="`Pregled: ${car.brand} ${car.model} ${car.engine}`"
+            :checklist-title="`Pregled: ${carName(car)} ${car.engine}`"
           />
           <CarDetailAlternatives v-if="analysis.alternatives.length > 0" :alternatives="analysis.alternatives" />
-          <CarDetailSection v-if="analysis.faq?.length" id="pitanja" title="Česta pitanja">
+          <ContentSection v-if="analysis.faq?.length" id="pitanja" title="Česta pitanja">
             <FaqAccordion :items="analysis.faq" class="mt-4" />
-          </CarDetailSection>
+          </ContentSection>
 
           <footer class="rounded-xl bg-sand p-5 text-body-sm text-ink/60">
             <p>
               Ovaj pregled je napravljen uz pomoć veštačke inteligencije, na osnovu tehničkih podataka i opšte poznatih
               iskustava sa modelom. Gde podaci nisu bili dovoljni, to smo i naznačili. Pre kupovine uvek odvedi auto na
               nezavisan pregled kod mehaničara.
+              <NuxtLink to="/kako-ocenjujemo" class="link-underline">Kako ocenjujemo →</NuxtLink>
             </p>
             <p v-if="updatedAt" class="mt-2 text-ink/50">Poslednje ažurirano: {{ updatedAt }}</p>
           </footer>

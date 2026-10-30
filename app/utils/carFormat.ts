@@ -9,6 +9,11 @@ import { FUEL_TYPE_OPTIONS, TRANSMISSION_OPTIONS } from './carFilters'
 // Tekst i oznake
 // ---------------------------------------------------------------------------
 
+/** Pun naziv za prikaz: "Renault Kadjar". Radi i za CarSummary i za CarDetail. */
+export function carName(car: { brand: string; model: string }): string {
+  return `${car.brand} ${car.model}`
+}
+
 /** "dizel" → "Dizel". Prazna vrednost → "—". */
 export function capitalize(value: string | null | undefined): string {
   if (!value) return '—'
@@ -34,13 +39,32 @@ export function formatScore(score: number): string {
   return score.toFixed(1).replace('.', ',')
 }
 
+/**
+ * Nivoi ocene, od najboljeg ka najslabijem. `min` je najniža ocena koja ulazi u nivo.
+ * Koristi ih scoreVerdict, a stranica /kako-ocenjujemo iz njih pravi tabelu —
+ * zato se pragovi menjaju samo ovde.
+ */
+export const SCORE_LEVELS = [
+  { min: 8.5, verdict: 'Odličan izbor', meaning: 'Pouzdan model sa malo poznatih problema. Teško se greši uz redovno održavanje.' },
+  { min: 7.5, verdict: 'Vrlo dobar izbor', meaning: 'Dobar model sa nekoliko poznatih slabosti koje se lako proveravaju pre kupovine.' },
+  { min: 6.5, verdict: 'Dobar, uz oprez', meaning: 'Solidan izbor, ali ima kvarove na koje treba obratiti pažnju — istorija servisa je presudna.' },
+  { min: 5, verdict: 'Prosečan', meaning: 'Više poznatih problema ili skuplje održavanje. Kupuj samo uz detaljan pregled.' },
+  { min: 0, verdict: 'Ispod proseka', meaning: 'Česti ili skupi kvarovi. Ima boljih izbora u istoj klasi.' },
+] as const
+
 /** Ocena rečima, za korisnike kojima broj sam po sebi ne govori mnogo. */
 export function scoreVerdict(score: number): string {
-  if (score >= 8.5) return 'Odličan izbor'
-  if (score >= 7.5) return 'Vrlo dobar izbor'
-  if (score >= 6.5) return 'Dobar, uz oprez'
-  if (score >= 5) return 'Prosečan'
-  return 'Ispod proseka'
+  return SCORE_LEVELS.find((level) => score >= level.min)?.verdict ?? 'Ispod proseka'
+}
+
+/**
+ * Samo ocenjeni automobili, od najbolje ka najslabijoj oceni. Ne menja originalnu listu.
+ * Primer: sortByRating(cars)[0] je najbolje ocenjen automobil.
+ */
+export function sortByRating<Car extends { overall_rating: number | null }>(cars: Car[]): Car[] {
+  return cars
+    .filter((car) => car.overall_rating !== null)
+    .sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0))
 }
 
 /**
@@ -70,14 +94,21 @@ function toDecimalComma(value: string): string {
   return value.replace('.', ',')
 }
 
-/** "procena: 4.4–5.0 L/100km" → { value: "4,4–5,0", estimate: true } */
-export function extractFuel(text: string): ParsedValue | null {
+export interface ParsedFuel extends ParsedValue {
+  average: number // srednja vrednost u l/100 km, za poređenje dva automobila (4,4–5,0 → 4,7)
+}
+
+/** "procena: 4.4–5.0 L/100km" → { value: "4,4–5,0", estimate: true, average: 4.7 } */
+export function extractFuel(text: string): ParsedFuel | null {
   // broj, opciono "– drugi broj", pa "l/100km" (razmaci i velika/mala slova su dozvoljeni)
   const match = text.match(/(\d+(?:[.,]\d+)?)(?:\s*[–-]\s*(\d+(?:[.,]\d+)?))?\s*l\s*\/\s*100\s*km/i)
   if (!match) return null
   const [, from = '', to] = match
   const value = to ? `${toDecimalComma(from)}–${toDecimalComma(to)}` : toDecimalComma(from)
-  return { value, estimate: ESTIMATE_WORDS.test(text) }
+
+  const low = Number(from.replace(',', '.'))
+  const high = to ? Number(to.replace(',', '.')) : low
+  return { value, estimate: ESTIMATE_WORDS.test(text), average: (low + high) / 2 }
 }
 
 /** "procena 300-800 EUR" → { value: "300–800 €", estimate: true } */

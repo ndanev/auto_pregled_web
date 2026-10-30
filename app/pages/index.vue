@@ -1,5 +1,13 @@
 <script setup lang="ts">
-// Početna stranica. Veći blokovi (hero, poziv na poređenje) su u `components/home/`.
+// Početna stranica. Veći blokovi su u `components/home/`.
+//
+// Redosled sekcija prati put korisnika:
+//   1. zna šta traži        → pretraga (hero) i marke
+//   2. razgleda             → najbolje ocenjeni automobili
+//   3. ne zna odakle da krene → upitnik, pa najbolji po kategoriji
+//   4. ima kandidate        → poređenje, pa ostali automobili
+//   5. ide da gleda auto    → spisak za pregled
+//   6. pita se da li da veruje → kako radi i metodologija
 const { fetchCars } = useCarsApi()
 const { fetchBrands } = useBrandsApi()
 
@@ -9,15 +17,14 @@ const { data: brandsData } = await useAsyncData('home-brands', () => fetchBrands
 const cars = computed(() => carsData.value?.data ?? [])
 const brands = computed(() => brandsData.value?.data ?? [])
 
-const topRated = computed(() =>
-  cars.value
-    .filter((car) => car.overall_rating !== null)
-    .sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0))
-    .slice(0, 3)
-)
+const topRated = computed(() => sortByRating(cars.value).slice(0, 3))
 
-// API vraća automobile od najnovijeg ka najstarijem
-const latestCars = computed(() => cars.value.slice(0, 8))
+// API vraća automobile od najnovijeg ka najstarijem. Preskačemo one koji su već u "Najbolje ocenjeno",
+// da se isti automobili ne ponavljaju jedan ispod drugog.
+const latestCars = computed(() => {
+  const shownAbove = new Set(topRated.value.map((car) => car.slug))
+  return cars.value.filter((car) => !shownAbove.has(car.slug)).slice(0, 8)
+})
 
 const steps = [
   { title: 'Pretraži bazu', text: 'Pronađi marku, model ili generaciju koja te zanima među analiziranim vozilima.' },
@@ -28,11 +35,9 @@ const steps = [
 
 <template>
   <div>
+    <!-- 1. Zna šta traži -->
     <HomeHero :car-count="cars.length" />
 
-    <HomeCarFinder :cars="cars" />
-
-    <!-- Marke -->
     <section v-if="brands.length > 0" class="border-b border-ink/10">
       <div class="site-container py-10">
         <span class="font-data text-eyebrow text-steel">PRETRAŽI PO MARCI</span>
@@ -49,35 +54,41 @@ const steps = [
       </div>
     </section>
 
-    <HomeBestFor :cars="cars" />
-
-    <!-- Najbolje ocenjeno -->
+    <!-- 2. Razgleda -->
     <section v-if="topRated.length > 0" class="site-container py-14">
-      <SectionHeading eyebrow="TOP OCENA" title="Najbolje ocenjeno" />
+      <SectionHeading eyebrow="TOP OCENA" title="Najbolje ocenjeno">
+        <NuxtLink to="/automobili" class="font-data text-data-sm link-underline">
+          Svi automobili →
+        </NuxtLink>
+      </SectionHeading>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <CarCard v-for="car in topRated" :key="car.slug" :car="car" />
       </div>
     </section>
 
+    <!-- 3. Ne zna odakle da krene -->
+    <HomeCarFinder :cars="cars" />
+
+    <HomeBestFor :cars="cars" />
+
+    <!-- 4. Ima kandidate -->
     <HomeCompareCta />
 
-    <!-- Poslednje dodato -->
-    <section class="site-container py-14">
+    <section v-if="latestCars.length > 0" class="site-container py-14">
       <SectionHeading eyebrow="SVEŽE" title="Poslednje dodato">
-        <NuxtLink to="/automobili" class="font-data text-data-sm text-ink font-medium hover:text-accent-dark transition-colors underline decoration-accent decoration-2 underline-offset-4">
+        <NuxtLink to="/automobili" class="font-data text-data-sm link-underline">
           Prikaži sve →
         </NuxtLink>
       </SectionHeading>
-
-      <div v-if="latestCars.length === 0" class="text-ink/60 font-data text-data">Trenutno nema objavljenih automobila.</div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         <CarCard v-for="car in latestCars" :key="car.slug" :car="car" />
       </div>
     </section>
 
+    <!-- 5. Ide da gleda auto -->
     <HomeInspectionGuide />
 
-    <!-- Kako radi -->
+    <!-- 6. Pita se da li da veruje -->
     <section class="border-t border-ink/10">
       <div class="site-container py-14">
         <span class="font-data text-eyebrow text-steel">KAKO RADI</span>
@@ -91,7 +102,6 @@ const steps = [
       </div>
     </section>
 
-    <!-- O AI analizi -->
     <section class="border-t border-ink/10 bg-sand">
       <div class="mx-auto max-w-3xl px-6 py-14 text-center">
         <span class="font-data text-eyebrow text-steel">METODOLOGIJA</span>
@@ -102,6 +112,9 @@ const steps = [
           proverene činjenice od procena, a kada za neki segment nema dovoljno pouzdanih podataka,
           to je i naznačeno umesto da se izmišlja odgovor.
         </p>
+        <NuxtLink to="/kako-ocenjujemo" class="mt-6 inline-block text-body-sm link-underline">
+          Više o tome kako ocenjujemo →
+        </NuxtLink>
       </div>
     </section>
   </div>

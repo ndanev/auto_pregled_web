@@ -27,7 +27,7 @@ const annualCost = computed(() => extractCost(props.analysis.maintenance.annual_
 </script>
 
 <template>
-  <CarDetailSection id="troskovi" title="Troškovi" intro="Koliko troši i koliko košta da ostane ispravan.">
+  <ContentSection id="troskovi" title="Troškovi" intro="Koliko troši i koliko košta da ostane ispravan.">
     <!-- Potrošnja goriva -->
     <h3 class="mt-8 text-body font-semibold text-ink">Potrošnja goriva</h3>
     <div v-if="fuelHasNumbers" class="mt-4 grid grid-cols-3 rounded-xl border border-ink/10 divide-x divide-ink/10">
@@ -72,5 +72,5 @@ const annualCost = computed(() => extractCost(props.analysis.maintenance.annual_
         <p v-else class="mt-1 text-body text-ink/75">{{ capitalize(analysis.maintenance.annual_estimate) }}</p>
       </div>
     </div>
-  </CarDetailSection>
+  </ContentSection>
 </template>

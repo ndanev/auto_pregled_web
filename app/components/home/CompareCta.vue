@@ -1,7 +1,7 @@
 <template>
   <!-- Poziv na poređenje: tamnoplavi blok između listi automobila na početnoj -->
   <section class="site-container">
-    <div class="rounded-3xl bg-ink text-white">
+    <div class="rounded-3xl bg-black text-white">
       <div class="px-6 py-10 md:px-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
         <div>
           <span class="font-data text-eyebrow text-accent-light">NEODLUČAN?</span>

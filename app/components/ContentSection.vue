@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Omotač za jednu sekciju stranice automobila: naslov, opcioni uvodni tekst i sadržaj.
+// Omotač za jednu sekciju dugačke stranice (automobil, vodič, metodologija): naslov, uvod i sadržaj.
 // `id` mora da odgovara stavci u SectionNav-u da bi navigacija mogla da skroluje do sekcije.
 defineProps<{ id: string; title: string; intro?: string }>()
 </script>

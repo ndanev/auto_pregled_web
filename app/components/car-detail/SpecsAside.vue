@@ -37,7 +37,7 @@ const specs = computed(() => [
 
     <div class="rounded-xl bg-sand p-5">
       <p class="text-body-sm text-ink/70">Dvoumiš se između dva modela?</p>
-      <CompareToggleButton :slug="car.slug" :label="`${car.brand} ${car.model}`" class="mt-3 w-full !py-2" />
+      <CompareToggleButton :slug="car.slug" :label="carName(car)" class="mt-3 w-full !py-2" />
     </div>
   </aside>
 </template>

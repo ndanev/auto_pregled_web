@@ -4,7 +4,7 @@ import type { CarDetail } from '~/types/car'
 
 const props = defineProps<{ car: CarDetail }>()
 
-const fullName = computed(() => `${props.car.brand} ${props.car.model}`)
+const fullName = computed(() => carName(props.car))
 
 const keyFacts = computed(() => [
   { label: 'Motor', value: props.car.engine },
@@ -50,7 +50,10 @@ const keyFacts = computed(() => [
             <span class="block text-body-lg font-medium" :class="scoreTone(car.overall_rating).text">
               {{ scoreVerdict(car.overall_rating) }}
             </span>
-            <span class="block text-body-sm text-ink/60">ukupna ocena od 10</span>
+            <span class="block text-body-sm text-ink/60">
+              ukupna ocena od 10 ·
+              <NuxtLink to="/kako-ocenjujemo" class="underline decoration-ink/30 underline-offset-2 hover:text-accent hover:decoration-accent">kako ocenjujemo?</NuxtLink>
+            </span>
           </div>
         </div>
 
@@ -69,7 +72,7 @@ const keyFacts = computed(() => [
           <!-- Vodi do sekcije "Pre kupovine" (id="pregled") -->
           <a
             v-if="car.analysis" href="#pregled"
-            class="rounded-full bg-accent px-5 py-2.5 text-body-sm font-medium text-white hover:bg-accent-dark transition-colors"
+            class="btn-primary"
           >
             Šta proveriti pre kupovine
           </a>

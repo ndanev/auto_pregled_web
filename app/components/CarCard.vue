@@ -10,7 +10,7 @@ const selected = computed(() => isSelected(props.car.slug))
 function handleToggleCompare(e: MouseEvent) {
   e.preventDefault()
   e.stopPropagation()
-  toggle({ slug: props.car.slug, label: `${props.car.brand} ${props.car.model}` })
+  toggle({ slug: props.car.slug, label: carName(props.car) })
 }
 </script>
 
@@ -23,7 +23,7 @@ function handleToggleCompare(e: MouseEvent) {
       <img
         v-if="car.main_thumbnail_url"
         :src="car.main_thumbnail_url"
-        :alt="`${car.brand} ${car.model}`"
+        :alt="carName(car)"
         loading="lazy"
         class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
       />
@@ -49,7 +49,7 @@ function handleToggleCompare(e: MouseEvent) {
         <span>{{ car.years }}</span>
       </div>
       <h3 class="font-display font-bold text-2xl leading-tight mt-1 text-ink group-hover:text-accent transition-colors">
-        {{ car.brand }} {{ car.model }}
+        {{ carName(car) }}
       </h3>
       <p class="text-body-sm text-ink/60 mt-1">
         {{ car.engine }}<template v-if="car.power_hp"> · {{ car.power_hp }} KS</template> · {{ transmissionLabel(car.transmission) }}

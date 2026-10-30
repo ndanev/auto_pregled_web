@@ -7,7 +7,7 @@ const topBrands = computed(() => (data.value?.data ?? []).slice(0, 6))
 
 <template>
   <footer class="border-t border-ink/10 bg-sand">
-    <div class="site-container py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="site-container py-12 grid grid-cols-2 md:grid-cols-5 gap-8">
       <div class="col-span-2 md:col-span-1">
         <span class="font-display font-extrabold text-display-sm text-ink">Auto Pregled</span>
         <p class="font-data text-data-sm text-ink/60 mt-3">
@@ -21,6 +21,15 @@ const topBrands = computed(() => (data.value?.data ?? []).slice(0, 6))
           <li><NuxtLink to="/automobili" class="font-data text-data-sm text-ink/70 hover:text-accent transition-colors">Svi automobili</NuxtLink></li>
           <li><NuxtLink to="/marke" class="font-data text-data-sm text-ink/70 hover:text-accent transition-colors">Sve marke</NuxtLink></li>
           <li><NuxtLink to="/uporedi" class="font-data text-data-sm text-ink/70 hover:text-accent transition-colors">Uporedi automobile</NuxtLink></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="font-data text-eyebrow text-steel">VODIČI</span>
+        <ul class="mt-3 space-y-2">
+          <li><NuxtLink to="/vodic" class="font-data text-data-sm text-ink/70 hover:text-accent transition-colors">Vodič za kupovinu</NuxtLink></li>
+          <li><NuxtLink to="/recnik" class="font-data text-data-sm text-ink/70 hover:text-accent transition-colors">Rečnik pojmova</NuxtLink></li>
+          <li><NuxtLink to="/kako-ocenjujemo" class="font-data text-data-sm text-ink/70 hover:text-accent transition-colors">Kako ocenjujemo</NuxtLink></li>
         </ul>
       </div>
 

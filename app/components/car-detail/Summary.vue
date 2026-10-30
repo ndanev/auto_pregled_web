@@ -16,7 +16,7 @@ const prosAndCons = computed(() => [
 </script>
 
 <template>
-  <CarDetailSection id="ukratko" title="Ukratko">
+  <ContentSection id="ukratko" title="Ukratko">
     <blockquote class="mt-5 max-w-4xl border-l-2 border-accent pl-5 text-body-lg md:text-xl leading-relaxed text-ink">
       {{ analysis.ai_summary.final_verdict }}
     </blockquote>
@@ -52,5 +52,5 @@ const prosAndCons = computed(() => [
         </ul>
       </div>
     </div>
-  </CarDetailSection>
+  </ContentSection>
 </template>

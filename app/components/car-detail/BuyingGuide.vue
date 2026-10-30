@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <CarDetailSection
+  <ContentSection
     id="pregled" title="Pre kupovine"
     intro="Ponesi ovaj spisak kad ideš da gledaš auto. Štikliraj usput — pamti se i kad zatvoriš stranicu."
   >
@@ -36,5 +36,5 @@ defineProps<{
         </ul>
       </div>
     </div>
-  </CarDetailSection>
+  </ContentSection>
 </template>

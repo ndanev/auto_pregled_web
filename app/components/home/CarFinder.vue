@@ -74,15 +74,30 @@ function restart() {
   step.value = 0
 }
 
-// Automobili koji odgovaraju dosadašnjim odgovorima (prazan odgovor = bez filtera)
-const matches = computed(() =>
-  props.cars.filter((car) =>
-    (Object.keys(answers) as FilterKey[]).every((key) => !answers[key] || car[key] === answers[key])
-  )
-)
+/** Da li automobil odgovara svim dosadašnjim odgovorima. Prazan odgovor ("svejedno") ne filtrira ništa. */
+function matchesAnswers(car: CarSummary): boolean {
+  const fuelOk = !answers.fuel_type || car.fuel_type === answers.fuel_type
+  const bodyOk = !answers.body_type || car.body_type === answers.body_type
+  const transmissionOk = !answers.transmission || car.transmission === answers.transmission
+  return fuelOk && bodyOk && transmissionOk
+}
 
-// Query za /automobili: samo filteri koji su stvarno izabrani
-const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).filter(([, value]) => value)))
+const matchingCars = computed(() => props.cars.filter(matchesAnswers))
+
+// Query za /automobili: samo filteri koji su stvarno izabrani (bez praznih "svejedno" odgovora)
+const resultsQuery = computed(() => {
+  const query: Record<string, string> = {}
+  if (answers.fuel_type) query.fuel_type = answers.fuel_type
+  if (answers.body_type) query.body_type = answers.body_type
+  if (answers.transmission) query.transmission = answers.transmission
+  return query
+})
+
+/** Da li je ovaj odgovor već izabran na trenutnom pitanju (za isticanje kad se korisnik vrati nazad). */
+function isChosen(choice: Choice): boolean {
+  if (!currentQuestion.value || !choice.value) return false
+  return answers[currentQuestion.value.key] === choice.value
+}
 </script>
 
 <template>
@@ -96,8 +111,8 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
           Odgovori na tri kratka pitanja i pokazaćemo ti modele koji odgovaraju tvom načinu vožnje.
         </p>
         <p class="mt-6 font-data text-data-sm text-ink/60">
-          <span class="text-data-lg font-semibold text-ink">{{ matches.length }}</span>
-          {{ matches.length === 1 ? 'model odgovara' : 'modela odgovara' }} tvom izboru
+          <span class="text-data-lg font-semibold text-ink">{{ matchingCars.length }}</span>
+          {{ matchingCars.length === 1 ? 'model odgovara' : 'modela odgovara' }} tvom izboru
         </p>
       </div>
 
@@ -119,9 +134,7 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
               type="button"
               @click="choose(choice.value)"
               class="group rounded-xl border px-4 py-3.5 text-left transition-colors"
-              :class="answers[currentQuestion.key] === choice.value && choice.value
-                ? 'border-accent bg-accent/5'
-                : 'border-ink/15 hover:border-accent hover:bg-accent/5'"
+              :class="isChosen(choice) ? 'border-accent bg-accent/5' : 'border-ink/15 hover:border-accent hover:bg-accent/5'"
             >
               <span class="block text-body font-medium text-ink group-hover:text-accent-dark">{{ choice.label }}</span>
               <span v-if="choice.hint" class="block mt-0.5 text-body-sm text-ink/55">{{ choice.hint }}</span>
@@ -130,14 +143,14 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
         </template>
 
         <div v-else class="flex h-full flex-col justify-center">
-          <template v-if="matches.length > 0">
+          <template v-if="matchingCars.length > 0">
             <h3 class="text-body-lg md:text-xl font-semibold text-ink">
-              {{ matches.length === 1 ? 'Ovaj model ti odgovara:' : 'Ovi modeli ti odgovaraju:' }}
+              {{ matchingCars.length === 1 ? 'Ovaj model ti odgovara:' : 'Ovi modeli ti odgovaraju:' }}
             </h3>
             <ul class="mt-4 space-y-2">
-              <li v-for="car in matches.slice(0, 3)" :key="car.slug">
+              <li v-for="car in matchingCars.slice(0, 3)" :key="car.slug">
                 <NuxtLink :to="`/automobili/${car.slug}`" class="flex items-center justify-between gap-4 rounded-xl border border-ink/10 px-4 py-3 hover:border-accent transition-colors">
-                  <span class="text-body font-medium text-ink">{{ car.brand }} {{ car.model }} <span class="font-normal text-ink/60">· {{ car.engine }}</span></span>
+                  <span class="text-body font-medium text-ink">{{ carName(car) }} <span class="font-normal text-ink/60">· {{ car.engine }}</span></span>
                   <span v-if="car.overall_rating" class="font-data text-data font-semibold" :class="scoreTone(car.overall_rating).text">{{ formatScore(car.overall_rating) }}</span>
                 </NuxtLink>
               </li>
@@ -150,12 +163,12 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
             <NuxtLink
-              :to="{ path: '/automobili', query: matches.length > 0 ? resultsQuery : {} }"
-              class="rounded-full bg-accent px-5 py-2.5 text-body-sm font-medium text-white hover:bg-accent-dark transition-colors"
+              :to="{ path: '/automobili', query: matchingCars.length > 0 ? resultsQuery : {} }"
+              class="btn-primary"
             >
-              {{ matches.length > 0 ? `Prikaži sve rezultate (${matches.length})` : 'Prikaži sve automobile' }}
+              {{ matchingCars.length > 0 ? `Prikaži sve rezultate (${matchingCars.length})` : 'Prikaži sve automobile' }}
             </NuxtLink>
-            <button type="button" @click="restart" class="rounded-full border border-ink/20 px-5 py-2.5 text-body-sm font-medium text-ink hover:border-ink/50 transition-colors">
+            <button type="button" @click="restart" class="btn-secondary">
               Počni ispočetka
             </button>
           </div>

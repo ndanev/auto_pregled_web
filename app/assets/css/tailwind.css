@@ -32,6 +32,18 @@
   .site-container {
     @apply mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:w-4/5 lg:px-0;
   }
+
+  /* Dugmad i linkovi koji se ponavljaju na celom sajtu. Rade i na <button> i na <NuxtLink>. */
+  .btn-primary {
+    @apply inline-block rounded-full bg-accent px-5 py-2.5 text-body-sm font-medium text-white transition-colors hover:bg-accent-dark;
+  }
+  .btn-secondary {
+    @apply inline-block rounded-full border border-ink/20 px-5 py-2.5 text-body-sm font-medium text-ink transition-colors hover:border-ink/50;
+  }
+  /* Tekstualni link sa narandžastom linijom ispod, npr. "Prikaži sve →" */
+  .link-underline {
+    @apply font-medium text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent;
+  }
 }
 
 @layer utilities {

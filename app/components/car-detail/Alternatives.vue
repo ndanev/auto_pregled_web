@@ -11,7 +11,7 @@ function searchQuery(model: string): string {
 </script>
 
 <template>
-  <CarDetailSection id="alternative" title="Ako ne ovaj, onda…">
+  <ContentSection id="alternative" title="Ako ne ovaj, onda…">
     <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
       <li v-for="alt in alternatives" :key="alt.model">
         <NuxtLink
@@ -24,5 +24,5 @@ function searchQuery(model: string): string {
         </NuxtLink>
       </li>
     </ul>
-  </CarDetailSection>
+  </ContentSection>
 </template>

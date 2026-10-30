@@ -80,7 +80,7 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
         v-if="activeFilterCount > 0"
         type="button"
         @click="clearFilters"
-        class="font-data text-data-sm text-ink/60 hover:text-ink underline decoration-accent decoration-2 underline-offset-4"
+        class="font-data text-data-sm text-ink/60 hover:text-ink link-underline"
       >
         Ukloni filtere ({{ activeFilterCount }})
       </button>
