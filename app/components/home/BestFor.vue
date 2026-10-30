@@ -51,11 +51,11 @@ const winners = computed(() =>
           <NuxtLink
             v-if="entry.listQuery"
             :to="{ path: '/automobili', query: entry.listQuery }"
-            class="shrink-0 text-body-sm text-ink/40 hover:text-accent transition-colors"
+            class="shrink-0 text-body-sm text-ink/55 hover:text-accent transition-colors"
           >
             Svi ({{ entry.count }}) →
           </NuxtLink>
-          <span v-else class="shrink-0 text-body-sm text-ink/40">{{ entry.count }} modela</span>
+          <span v-else class="shrink-0 text-body-sm text-ink/55">{{ entry.count }} modela</span>
         </div>
 
         <NuxtLink :to="`/automobili/${entry.best.slug}`" class="group mt-3 flex items-center gap-4">
@@ -66,10 +66,10 @@ const winners = computed(() =>
             />
           </div>
           <div class="min-w-0">
-            <p class="font-display font-bold uppercase text-xl leading-tight text-ink group-hover:text-accent transition-colors truncate">
+            <p class="font-display font-bold text-lg leading-snug text-ink group-hover:text-accent transition-colors line-clamp-2">
               {{ entry.best.brand }} {{ entry.best.model }}
             </p>
-            <p class="mt-0.5 text-body-sm text-ink/50 truncate">{{ entry.best.engine }}</p>
+            <p class="mt-0.5 text-body-sm text-ink/60 line-clamp-1">{{ entry.best.engine }}</p>
           </div>
         </NuxtLink>
 
@@ -77,7 +77,7 @@ const winners = computed(() =>
           <div class="flex items-center justify-between border-t border-ink/10 pt-3">
             <span class="text-body-sm" :class="scoreTone(entry.best.overall_rating!).text">{{ scoreVerdict(entry.best.overall_rating!) }}</span>
             <span class="font-data text-data-lg font-semibold text-ink">
-              {{ formatScore(entry.best.overall_rating!) }}<span class="text-data-sm font-normal text-ink/40">/10</span>
+              {{ formatScore(entry.best.overall_rating!) }}<span class="text-data-sm font-normal text-ink/55">/10</span>
             </span>
           </div>
         </div>

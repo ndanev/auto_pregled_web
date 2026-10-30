@@ -91,11 +91,11 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
       <!-- Levo: uvod -->
       <div>
         <span class="font-data text-eyebrow text-steel">NE ZNAŠ ODAKLE DA KRENEŠ?</span>
-        <h2 class="font-display font-bold uppercase text-display-sm md:text-display-md text-ink mt-2">Pronađi auto za sebe</h2>
+        <h2 class="font-display font-bold text-display-sm md:text-display-md text-ink mt-2">Pronađi auto za sebe</h2>
         <p class="mt-4 text-body text-ink/65 max-w-md">
           Odgovori na tri kratka pitanja i pokazaćemo ti modele koji odgovaraju tvom načinu vožnje.
         </p>
-        <p class="mt-6 font-data text-data-sm text-ink/50">
+        <p class="mt-6 font-data text-data-sm text-ink/60">
           <span class="text-data-lg font-semibold text-ink">{{ matches.length }}</span>
           {{ matches.length === 1 ? 'model odgovara' : 'modela odgovara' }} tvom izboru
         </p>
@@ -104,7 +104,7 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
       <!-- Desno: trenutno pitanje ili rezultat -->
       <div>
         <template v-if="!isFinished && currentQuestion">
-          <div class="flex items-center justify-between text-body-sm text-ink/50">
+          <div class="flex items-center justify-between text-body-sm text-ink/60">
             <span>Pitanje {{ step + 1 }} od {{ QUESTIONS.length }}</span>
             <button v-if="step > 0" type="button" @click="goBack" class="hover:text-ink transition-colors">← Nazad</button>
           </div>
@@ -137,7 +137,7 @@ const resultsQuery = computed(() => Object.fromEntries(Object.entries(answers).f
             <ul class="mt-4 space-y-2">
               <li v-for="car in matches.slice(0, 3)" :key="car.slug">
                 <NuxtLink :to="`/automobili/${car.slug}`" class="flex items-center justify-between gap-4 rounded-xl border border-ink/10 px-4 py-3 hover:border-accent transition-colors">
-                  <span class="text-body font-medium text-ink">{{ car.brand }} {{ car.model }} <span class="font-normal text-ink/50">· {{ car.engine }}</span></span>
+                  <span class="text-body font-medium text-ink">{{ car.brand }} {{ car.model }} <span class="font-normal text-ink/60">· {{ car.engine }}</span></span>
                   <span v-if="car.overall_rating" class="font-data text-data font-semibold" :class="scoreTone(car.overall_rating).text">{{ formatScore(car.overall_rating) }}</span>
                 </NuxtLink>
               </li>

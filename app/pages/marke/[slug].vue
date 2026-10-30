@@ -30,15 +30,15 @@ useSeoMeta({
       </div>
       <div>
         <span class="font-data text-eyebrow text-steel">MARKA</span>
-        <h1 class="font-display font-extrabold uppercase text-display-lg md:text-display-xl text-ink leading-none mt-1">
+        <h1 class="font-display font-extrabold text-display-lg md:text-display-xl text-ink leading-none mt-1">
           {{ brand.name }}
         </h1>
       </div>
     </div>
 
-    <p class="font-data text-data-sm text-ink/50 mt-6">{{ cars.length }} automobila</p>
+    <p class="font-data text-data-sm text-ink/60 mt-6">{{ cars.length }} automobila</p>
 
-    <div v-if="cars.length === 0" class="text-ink/50 font-data text-data mt-10">
+    <div v-if="cars.length === 0" class="text-ink/60 font-data text-data mt-10">
       Trenutno nema objavljenih automobila za ovu marku.
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">

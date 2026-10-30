@@ -20,7 +20,7 @@ function searchQuery(model: string): string {
         >
           <span class="text-body-lg font-semibold text-ink">{{ alt.model }}</span>
           <span class="mt-1 text-body-sm text-ink/60">{{ capitalize(alt.reason) }}</span>
-          <span class="mt-auto pt-4 text-body-sm text-ink/40 group-hover:text-accent transition-colors">Potraži u bazi →</span>
+          <span class="mt-auto pt-4 text-body-sm text-ink/55 group-hover:text-accent transition-colors">Potraži u bazi →</span>
         </NuxtLink>
       </li>
     </ul>

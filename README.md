@@ -113,7 +113,9 @@ Sve boje i fontovi su definisani u `tailwind.config.ts`. U komponentama koristi 
 | `accent`, `accent-dark`, `accent-light` | dugmad, linkovi, aktivna stanja | `bg-accent hover:bg-accent-dark` |
 | `positive` / `caution` / `negative` | semafor za ocene, prednosti i mane | `text-positive` |
 
-Fontovi: `font-display` (veliki naslovi, uvek uppercase), `font-sans` (tekst), `font-data` (brojevi i oznake).
+Fontovi: `font-display` = Bricolage Grotesque (naslovi, u normalnoj rečenici — ne velikim slovima), `font-sans` = Manrope (tekst), `font-data` = Manrope sa ciframa jednake širine (brojevi i oznake). Oba se učitavaju sa Google Fonts u `nuxt.config.ts`.
+
+Najmanja veličina teksta je 14px (`text-data-sm`); za opise i savete koristi `text-body-sm` (15px), a za osnovni tekst `text-body` (17px). Za sivi tekst ne idi ispod `text-ink/55`, inače postaje teško čitljiv.
 
 Za boju ocene koristi `scoreTone(score)` umesto ručnog biranja — tako sve ocene na sajtu imaju iste pragove.
 

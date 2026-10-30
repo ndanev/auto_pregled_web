@@ -31,12 +31,12 @@ const WHAT_TO_BRING = [
     <div class="site-container py-14 grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-14">
       <div>
         <span class="font-data text-eyebrow text-steel">VODIČ ZA KUPCE</span>
-        <h2 class="font-display font-bold uppercase text-display-sm md:text-display-md text-ink mt-2">Kako pregledati polovnjak</h2>
+        <h2 class="font-display font-bold text-display-sm md:text-display-md text-ink mt-2">Kako pregledati polovnjak</h2>
         <p class="mt-4 text-body text-ink/65 max-w-md">
           Bez obzira koji model gledaš, ovih dvanaest stvari proveri pre nego što se dogovoriš oko cene.
           Spisak se pamti u tvom pregledaču, pa možeš da ga štikliraš na licu mesta.
         </p>
-        <p class="mt-3 text-body-sm text-ink/50">
+        <p class="mt-3 text-body-sm text-ink/60">
           Savet: dogovori se sa prodavcem da motor ne pali pre tvog dolaska — hladan start otkriva najviše.
         </p>
 

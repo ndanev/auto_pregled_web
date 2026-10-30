@@ -4,6 +4,7 @@
 
 @layer base {
   html {
+    font-weight: theme('fontWeight.normal');
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -19,6 +20,8 @@
     outline-offset: 2px;
   }
 
+  /* Cifre jednake širine, da se brojevi u tabelama i listama poravnaju.
+     Za jedan krupan broj (npr. velika ocena 7,2) koristi `font-display`, inače zarez deluje odvojeno. */
   .font-data {
     font-variant-numeric: tabular-nums;
   }

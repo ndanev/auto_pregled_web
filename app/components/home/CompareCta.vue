@@ -5,7 +5,7 @@
       <div class="px-6 py-10 md:px-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
         <div>
           <span class="font-data text-eyebrow text-accent-light">NEODLUČAN?</span>
-          <h2 class="font-display font-bold uppercase text-display-sm text-white mt-1">
+          <h2 class="font-display font-bold text-display-sm text-white mt-1">
             Uporedi dva automobila jedan pored drugog
           </h2>
           <p class="text-body-sm text-white/70 mt-2 max-w-md">

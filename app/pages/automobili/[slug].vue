@@ -62,13 +62,13 @@ const updatedAt = computed(() => formatDate(analysis.value?.meta?.generated_at))
             <FaqAccordion :items="analysis.faq" class="mt-4" />
           </CarDetailSection>
 
-          <footer class="rounded-xl bg-sand p-5 text-body-sm text-ink/50">
+          <footer class="rounded-xl bg-sand p-5 text-body-sm text-ink/60">
             <p>
               Ovaj pregled je napravljen uz pomoć veštačke inteligencije, na osnovu tehničkih podataka i opšte poznatih
               iskustava sa modelom. Gde podaci nisu bili dovoljni, to smo i naznačili. Pre kupovine uvek odvedi auto na
               nezavisan pregled kod mehaničara.
             </p>
-            <p v-if="updatedAt" class="mt-2 text-ink/35">Poslednje ažurirano: {{ updatedAt }}</p>
+            <p v-if="updatedAt" class="mt-2 text-ink/50">Poslednje ažurirano: {{ updatedAt }}</p>
           </footer>
         </div>
       </article>

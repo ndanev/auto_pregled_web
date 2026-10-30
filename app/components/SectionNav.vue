@@ -32,7 +32,7 @@ onBeforeUnmount(() => observer?.disconnect())
           <a
             :href="`#${item.id}`"
             class="block whitespace-nowrap py-3.5 text-body-sm border-b-2 -mb-px transition-colors"
-            :class="activeId === item.id ? 'border-accent text-ink' : 'border-transparent text-ink/50 hover:text-ink'"
+            :class="activeId === item.id ? 'border-accent text-ink' : 'border-transparent text-ink/60 hover:text-ink'"
           >
             {{ item.label }}
           </a>

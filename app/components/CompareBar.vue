@@ -19,14 +19,14 @@ const compareUrl = computed(() => {
           class="font-data text-data-sm text-ink bg-ink/5 rounded-full px-3 py-1.5 flex items-center gap-2"
         >
           {{ item.label }}
-          <button @click="toggle(item)" class="text-ink/50 hover:text-negative">✕</button>
+          <button @click="toggle(item)" class="text-ink/60 hover:text-negative">✕</button>
         </span>
-        <span v-if="selected.length < 2" class="font-data text-data-sm text-ink/40">
+        <span v-if="selected.length < 2" class="font-data text-data-sm text-ink/55">
           Izaberi još {{ 2 - selected.length }} automobil{{ 2 - selected.length === 1 ? '' : 'a' }}
         </span>
       </div>
       <div class="flex items-center gap-3 shrink-0">
-        <button @click="clear" class="font-data text-data-sm text-ink/50 hover:text-ink">Obriši</button>
+        <button @click="clear" class="font-data text-data-sm text-ink/60 hover:text-ink">Obriši</button>
         <NuxtLink
           v-if="compareUrl"
           :to="compareUrl"

@@ -16,7 +16,7 @@ const keyFacts = computed(() => [
 
 <template>
   <section class="site-container pt-6 pb-10 md:pb-14">
-    <nav class="text-body-sm text-ink/50" aria-label="Putanja">
+    <nav class="text-body-sm text-ink/60" aria-label="Putanja">
       <NuxtLink to="/automobili" class="hover:text-ink transition-colors">Automobili</NuxtLink>
       <span class="mx-2 text-ink/25">/</span>
       <NuxtLink :to="{ path: '/automobili', query: { q: car.brand } }" class="hover:text-ink transition-colors">{{ car.brand }}</NuxtLink>
@@ -27,7 +27,7 @@ const keyFacts = computed(() => [
     <div class="mt-6 grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-8 lg:gap-12">
       <CarGallery v-if="car.images.length > 0" :images="car.images" :alt="fullName" />
       <div v-else class="aspect-[16/10] rounded-xl bg-gradient-to-br from-sand to-sand-deep flex items-center justify-center">
-        <span class="text-body-sm text-ink/40">Fotografija uskoro</span>
+        <span class="text-body-sm text-ink/55">Fotografija uskoro</span>
       </div>
 
       <div class="flex flex-col">
@@ -38,19 +38,19 @@ const keyFacts = computed(() => [
           <span>{{ car.years }}</span>
         </div>
 
-        <h1 class="mt-2 font-display font-extrabold uppercase text-display-lg md:text-display-xl text-ink">
+        <h1 class="mt-2 font-display font-extrabold text-display-lg md:text-display-xl text-ink">
           {{ car.brand }}<br />{{ car.model }}
         </h1>
 
         <div v-if="car.overall_rating" class="mt-6 flex items-end gap-4">
-          <span class="font-data text-[4rem] leading-none font-semibold text-ink tracking-tight">
+          <span class="font-display text-[4rem] leading-none font-bold text-ink">
             {{ formatScore(car.overall_rating) }}
           </span>
           <div class="pb-1.5">
             <span class="block text-body-lg font-medium" :class="scoreTone(car.overall_rating).text">
               {{ scoreVerdict(car.overall_rating) }}
             </span>
-            <span class="block text-body-sm text-ink/50">ukupna ocena od 10</span>
+            <span class="block text-body-sm text-ink/60">ukupna ocena od 10</span>
           </div>
         </div>
 
@@ -60,7 +60,7 @@ const keyFacts = computed(() => [
 
         <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-ink/10 pt-5">
           <div v-for="fact in keyFacts" :key="fact.label">
-            <dt class="text-body-sm text-ink/45">{{ fact.label }}</dt>
+            <dt class="text-body-sm text-ink/55">{{ fact.label }}</dt>
             <dd class="text-body font-medium text-ink">{{ fact.value }}</dd>
           </div>
         </dl>

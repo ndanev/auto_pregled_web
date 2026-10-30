@@ -9,8 +9,8 @@ const topBrands = computed(() => (data.value?.data ?? []).slice(0, 6))
   <footer class="border-t border-ink/10 bg-sand">
     <div class="site-container py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
       <div class="col-span-2 md:col-span-1">
-        <span class="font-display font-extrabold uppercase text-display-sm text-ink">Auto Pregled</span>
-        <p class="font-data text-data-sm text-ink/50 mt-3">
+        <span class="font-display font-extrabold text-display-sm text-ink">Auto Pregled</span>
+        <p class="font-data text-data-sm text-ink/60 mt-3">
           AI analiza polovnih automobila — pouzdanost, troškovi i najčešći kvarovi.
         </p>
       </div>
@@ -38,8 +38,8 @@ const topBrands = computed(() => (data.value?.data ?? []).slice(0, 6))
 
     <div class="border-t border-ink/10">
       <div class="site-container py-6 flex items-center justify-between">
-        <span class="font-data text-data-sm text-ink/40">AUTO PREGLED — AI analiza automobila</span>
-        <span class="font-data text-data-sm text-ink/40">© {{ new Date().getFullYear() }}</span>
+        <span class="font-data text-data-sm text-ink/55">AUTO PREGLED — AI analiza automobila</span>
+        <span class="font-data text-data-sm text-ink/55">© {{ new Date().getFullYear() }}</span>
       </div>
     </div>
   </footer>

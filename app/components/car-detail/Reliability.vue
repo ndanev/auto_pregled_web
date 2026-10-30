@@ -34,10 +34,10 @@ const showDriving = computed(() => !!props.analysis.driving_experience && !hasIn
 
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-8 items-start">
       <div class="sm:pr-8 sm:border-r border-ink/10">
-        <span class="font-data text-data-xl md:text-[3rem] leading-none font-semibold" :class="scoreTone(analysis.reliability.score).text">
+        <span class="font-display text-data-xl md:text-[3rem] leading-none font-bold" :class="scoreTone(analysis.reliability.score).text">
           {{ formatScore(analysis.reliability.score) }}
         </span>
-        <span class="block mt-2 text-body-sm text-ink/50">ukupna pouzdanost</span>
+        <span class="block mt-2 text-body-sm text-ink/60">ukupna pouzdanost</span>
       </div>
       <div class="space-y-5">
         <ScoreBar v-for="row in reliabilityRows" :key="row.label" :label="row.label" :score="row.score" />

@@ -7,9 +7,9 @@ const brands = computed(() => data.value?.data ?? [])
 <template>
   <div class="site-container py-12">
     <span class="font-data text-eyebrow text-steel">SVE MARKE</span>
-    <h1 class="font-display font-extrabold uppercase text-display-md md:text-display-lg mt-2 text-ink">Marke</h1>
+    <h1 class="font-display font-extrabold text-display-md md:text-display-lg mt-2 text-ink">Marke</h1>
 
-    <div v-if="brands.length === 0" class="text-ink/50 font-data text-data mt-10">
+    <div v-if="brands.length === 0" class="text-ink/60 font-data text-data mt-10">
       Trenutno nema dostupnih marki.
     </div>
     <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-10">
@@ -23,10 +23,10 @@ const brands = computed(() => data.value?.data ?? [])
         <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-full h-full object-contain" />
         <span v-else class="font-display font-bold text-2xl text-ink/20">{{ brand.name[0] }}</span>
       </div>
-      <h3 class="font-display font-bold uppercase text-display-sm text-ink group-hover:text-accent-dark transition-colors">
+      <h3 class="font-display font-bold text-display-sm text-ink group-hover:text-accent-dark transition-colors">
         {{ brand.name }}
       </h3>
-      <p class="font-data text-data-sm text-ink/50 mt-1">{{ brand.cars_count }} automobila</p>
+      <p class="font-data text-data-sm text-ink/60 mt-1">{{ brand.cars_count }} automobila</p>
     </NuxtLink>
     </div>
   </div>

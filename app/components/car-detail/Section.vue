@@ -6,7 +6,7 @@ defineProps<{ id: string; title: string; intro?: string }>()
 
 <template>
   <section :id="id" class="scroll-mt-32">
-    <h2 class="font-display font-bold uppercase text-display-sm text-ink">{{ title }}</h2>
+    <h2 class="font-display font-bold text-display-sm text-ink">{{ title }}</h2>
     <p v-if="intro" class="mt-2 text-body text-ink/60">{{ intro }}</p>
     <slot />
   </section>

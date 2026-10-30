@@ -36,7 +36,7 @@ function filterByBodyType(value: string) {
           <template v-if="carCount > 0">{{ carCount }} modela analizirano</template>
           <template v-else>AI analiza polovnih automobila</template>
         </span>
-        <h1 class="mt-5 font-display font-extrabold uppercase leading-[0.9] text-display-lg md:text-display-xl text-white">
+        <h1 class="mt-5 font-display font-extrabold text-display-lg md:text-display-xl text-white">
           Da li je ovo<br /><span class="text-accent-light">dobar izbor?</span>
         </h1>
         <p class="mt-5 text-body-lg text-white/75 max-w-lg">
@@ -49,7 +49,7 @@ function filterByBodyType(value: string) {
             v-model="searchQuery"
             type="text" placeholder="Marka ili model, npr. Golf 7"
             aria-label="Pretraga automobila"
-            class="flex-1 min-w-0 bg-transparent px-4 py-2.5 text-body placeholder:text-ink/40 focus:outline-none text-ink"
+            class="flex-1 min-w-0 bg-transparent px-4 py-2.5 text-body placeholder:text-ink/55 focus:outline-none text-ink"
           />
           <button type="submit" class="rounded-full bg-accent px-6 text-body-sm font-semibold text-white hover:bg-accent-dark transition-colors shrink-0">
             Pretraži
@@ -57,7 +57,7 @@ function filterByBodyType(value: string) {
         </form>
 
         <div class="mt-5 flex flex-wrap items-center gap-2">
-          <span class="text-body-sm text-white/50 mr-1">Ili izaberi:</span>
+          <span class="text-body-sm text-white/65 mr-1">Ili izaberi:</span>
           <button
             v-for="category in BODY_TYPE_CATEGORIES" :key="category.value"
             type="button"

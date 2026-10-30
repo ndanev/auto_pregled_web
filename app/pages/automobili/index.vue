@@ -60,14 +60,14 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
 <template>
   <div class="site-container py-12">
     <span class="font-data text-eyebrow text-steel">BAZA VOZILA</span>
-    <h1 class="font-display font-extrabold uppercase text-display-md md:text-display-lg mt-2 text-ink">Svi automobili</h1>
+    <h1 class="font-display font-extrabold text-display-md md:text-display-lg mt-2 text-ink">Svi automobili</h1>
 
     <div class="mt-6 flex max-w-md rounded-full border border-ink/15 bg-white overflow-hidden">
       <input
         v-model="searchQuery"
         type="text" placeholder="Pretraži marku ili model..."
         aria-label="Pretraga automobila"
-        class="flex-1 bg-transparent px-5 py-2.5 font-data text-body-sm placeholder:text-ink/40 focus:outline-none text-ink"
+        class="flex-1 bg-transparent px-5 py-2.5 font-data text-body-sm placeholder:text-ink/55 focus:outline-none text-ink"
       />
     </div>
 
@@ -80,13 +80,13 @@ watch([searchQuery, bodyType, fuelType, transmission], () => {
         v-if="activeFilterCount > 0"
         type="button"
         @click="clearFilters"
-        class="font-data text-data-sm text-ink/50 hover:text-ink underline decoration-accent decoration-2 underline-offset-4"
+        class="font-data text-data-sm text-ink/60 hover:text-ink underline decoration-accent decoration-2 underline-offset-4"
       >
         Ukloni filtere ({{ activeFilterCount }})
       </button>
     </div>
 
-    <div v-if="cars.length === 0" class="text-ink/50 font-data text-data mt-10">
+    <div v-if="cars.length === 0" class="text-ink/60 font-data text-data mt-10">
       {{ searchQuery || activeFilterCount > 0 ? 'Nema rezultata za izabrane filtere.' : 'Trenutno nema objavljenih automobila.' }}
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8">

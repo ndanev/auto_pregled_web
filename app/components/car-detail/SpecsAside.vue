@@ -29,7 +29,7 @@ const specs = computed(() => [
       <h2 class="px-5 pt-4 pb-3 text-body font-semibold text-ink">Tehnički podaci</h2>
       <dl class="divide-y divide-ink/5 border-t border-ink/10">
         <div v-for="spec in specs" :key="spec.label" class="flex items-baseline justify-between gap-4 px-5 py-2.5">
-          <dt class="text-body-sm text-ink/50">{{ spec.label }}</dt>
+          <dt class="text-body-sm text-ink/60">{{ spec.label }}</dt>
           <dd class="text-body-sm text-ink text-right">{{ spec.value }}</dd>
         </div>
       </dl>

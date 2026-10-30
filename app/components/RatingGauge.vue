@@ -36,8 +36,8 @@ function tickPoint(value: number, radius: number) {
     </svg>
     <div class="-mt-6 text-center">
       <span class="font-data text-data-xl font-semibold text-ink">{{ clamped.toFixed(1) }}</span>
-      <span class="font-data text-data-sm text-ink/50">/10</span>
+      <span class="font-data text-data-sm text-ink/60">/10</span>
     </div>
-    <span class="mt-1 font-data text-eyebrow text-ink/50">{{ label }}</span>
+    <span class="mt-1 font-data text-eyebrow text-ink/60">{{ label }}</span>
   </div>
 </template>

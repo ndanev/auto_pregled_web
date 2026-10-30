@@ -65,7 +65,7 @@ useSeoMeta({
 <template>
   <div class="site-container py-12">
     <span class="font-data text-eyebrow text-steel">POREĐENJE</span>
-    <h1 class="font-display font-extrabold uppercase text-display-lg mt-2 text-ink">
+    <h1 class="font-display font-extrabold text-display-lg mt-2 text-ink">
       <template v-if="cars">
         {{ carName(cars[0]) }} <span class="text-ink/30">vs</span> {{ carName(cars[1]) }}
       </template>
@@ -77,7 +77,7 @@ useSeoMeta({
       <p class="font-data text-data-sm text-ink/60 mb-6">Izaberi dva automobila za poređenje.</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
         <div v-for="(label, index) in pickerLabels" :key="label">
-          <label :for="`picker-${index}`" class="block font-data text-eyebrow text-ink/40 mb-2">{{ label }}</label>
+          <label :for="`picker-${index}`" class="block font-data text-eyebrow text-ink/55 mb-2">{{ label }}</label>
           <select
             :id="`picker-${index}`"
             v-model="picked[index]"
@@ -116,7 +116,7 @@ useSeoMeta({
         <div class="border border-ink/10 divide-y divide-ink/10">
           <div v-for="row in specRows" :key="row.label" class="grid grid-cols-3 px-5 py-3 bg-white items-center">
             <span class="font-data text-data-sm text-ink">{{ row.a }}</span>
-            <span class="font-data text-eyebrow text-ink/40 text-center">{{ row.label }}</span>
+            <span class="font-data text-eyebrow text-ink/55 text-center">{{ row.label }}</span>
             <span class="font-data text-data-sm text-ink text-right">{{ row.b }}</span>
           </div>
         </div>
@@ -153,7 +153,7 @@ useSeoMeta({
         </div>
       </template>
 
-      <div v-else class="mt-10 text-ink/50 font-data text-data">
+      <div v-else class="mt-10 text-ink/60 font-data text-data">
         AI analiza nije dostupna za jedan ili oba automobila.
       </div>
 

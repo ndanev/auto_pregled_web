@@ -27,23 +27,33 @@ export default {
         negative: '#C8312B',
       },
       fontFamily: {
-        display: ['"Big Shoulders Display"', 'sans-serif'], // veliki naslovi (uvek uppercase)
-        sans: ['"IBM Plex Sans"', 'sans-serif'], // osnovni tekst
-        data: ['"Inter"', 'sans-serif'], // brojevi i oznake; poravnate cifre (vidi tailwind.css)
+        display: ['"Bricolage Grotesque"', 'sans-serif'], // naslovi
+        sans: ['Manrope', 'sans-serif'], // osnovni tekst
+        data: ['Manrope', 'sans-serif'], // brojevi i oznake; cifre jednake širine (vidi tailwind.css)
+      },
+      // Oba fonta su varijabilna, pa težine ne moraju biti okrugle stotine.
+      // Manrope je po prirodi tanak — zato je "normal" 450 umesto 400, da tekst ne deluje bledo.
+      fontWeight: {
+        normal: '450',
+        medium: '560',
+        semibold: '650',
+        bold: '720',
+        extrabold: '800',
       },
       fontSize: {
-        eyebrow: ['0.75rem', { lineHeight: '1', letterSpacing: '0.2em' }],
-        'data-sm': ['0.8125rem', { lineHeight: '1.4' }],
-        data: ['0.9375rem', { lineHeight: '1.4' }],
-        'data-lg': ['1.25rem', { lineHeight: '1.2' }],
-        'data-xl': ['1.875rem', { lineHeight: '1' }],
-        'body-sm': ['0.875rem', { lineHeight: '1.6' }],
-        body: ['1rem', { lineHeight: '1.7' }],
-        'body-lg': ['1.125rem', { lineHeight: '1.7' }],
-        'display-sm': ['1.75rem', { lineHeight: '0.95', letterSpacing: '-0.01em' }],
-        'display-md': ['2.75rem', { lineHeight: '0.9', letterSpacing: '-0.01em' }],
-        'display-lg': ['3.5rem', { lineHeight: '0.88', letterSpacing: '-0.01em' }],
-        'display-xl': ['4.5rem', { lineHeight: '0.86', letterSpacing: '-0.01em' }],
+        // Najmanja veličina teksta na sajtu je 14px (data-sm), osim eyebrow oznaka koje su uvek velikim slovima.
+        eyebrow: ['0.8125rem', { lineHeight: '1', letterSpacing: '0.14em' }], // 13px, MALE OZNAKE IZNAD NASLOVA
+        'data-sm': ['0.875rem', { lineHeight: '1.45' }], // 14px
+        data: ['1rem', { lineHeight: '1.45' }], // 16px
+        'data-lg': ['1.375rem', { lineHeight: '1.2' }], // 22px
+        'data-xl': ['2rem', { lineHeight: '1.05' }], // 32px
+        'body-sm': ['0.9375rem', { lineHeight: '1.6' }], // 15px — opisi, saveti, sporedni tekst
+        body: ['1.0625rem', { lineHeight: '1.7' }], // 17px — osnovni tekst
+        'body-lg': ['1.1875rem', { lineHeight: '1.65' }], // 19px — uvodi i istaknut tekst
+        'display-sm': ['1.875rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }], // 30px — naslovi sekcija
+        'display-md': ['2.5rem', { lineHeight: '1.05', letterSpacing: '-0.025em' }], // 40px
+        'display-lg': ['3.25rem', { lineHeight: '1', letterSpacing: '-0.03em' }], // 52px
+        'display-xl': ['4.25rem', { lineHeight: '0.98', letterSpacing: '-0.035em' }], // 68px — glavni naslov stranice
       },
     },
   },
