@@ -1,8 +1,11 @@
 <script setup lang="ts">
+// Kartica automobila u listama. Cela kartica je link; dugme "+ Uporedi" ne sme da pokrene navigaciju.
 import type { CarSummary } from '~/types/car'
 
 const props = defineProps<{ car: CarSummary }>()
 const { toggle, isSelected } = useCompare()
+
+const selected = computed(() => isSelected(props.car.slug))
 
 function handleToggleCompare(e: MouseEvent) {
   e.preventDefault()
@@ -14,50 +17,54 @@ function handleToggleCompare(e: MouseEvent) {
 <template>
   <NuxtLink
     :to="`/automobili/${car.slug}`"
-    class="group block rounded-2xl border border-white/10 bg-surface overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
+    class="group flex flex-col rounded-xl border border-ink/10 bg-white overflow-hidden hover:border-ink/25 hover:shadow-lg hover:shadow-ink/5 transition-colors"
   >
-    <div class="relative aspect-[4/3] bg-gradient-to-br from-[#1A2824] to-[#0E1613] overflow-hidden">
+    <div class="relative aspect-[4/3] bg-gradient-to-br from-sand to-sand-deep overflow-hidden">
       <img
         v-if="car.main_thumbnail_url"
         :src="car.main_thumbnail_url"
         :alt="`${car.brand} ${car.model}`"
-        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
       />
-      <template v-else>
-        <div class="absolute -inset-y-10 left-1/3 w-24 rotate-[20deg] bg-white/10 blur-2xl"></div>
-        <div class="absolute -inset-y-10 left-1/2 w-8 rotate-[20deg] bg-white/15 blur-md"></div>
-      </template>
 
-      <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full font-mono text-[11px] tracking-wide uppercase">
-        {{ car.body_type ?? car.fuel_type }}
+      <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-ink px-2.5 py-1 rounded-md text-xs font-medium">
+        {{ bodyTypeLabel(car.body_type ?? car.fuel_type) }}
       </span>
 
       <button
+        type="button"
         @click="handleToggleCompare"
-        class="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center border transition-colors"
-        :class="isSelected(car.slug) ? 'bg-amber border-amber text-black' : 'bg-white/50 border-white/20 text-white/70 hover:border-white/40'"
-        :title="isSelected(car.slug) ? 'Ukloni iz poređenja' : 'Dodaj za poređenje'"
+        class="absolute top-3 right-3 rounded-md px-2.5 py-1 text-xs font-medium backdrop-blur-sm transition-colors"
+        :class="selected ? 'bg-accent text-white' : 'bg-white/90 text-ink/80 hover:text-ink hover:bg-white'"
+        :aria-pressed="selected"
       >
-        <span class="text-xs leading-none">✓</span>
+        {{ selected ? '✓ U poređenju' : '+ Uporedi' }}
       </button>
     </div>
 
-    <div class="p-4">
-      <div class="flex items-center gap-2">
-        <img v-if="car.brand_logo_url" :src="car.brand_logo_url" :alt="car.brand" class="w-4 h-4 object-contain" />
-        <span class="font-mono text-eyebrow text-steel">{{ car.years }} · {{ car.transmission }}</span>
+    <div class="flex flex-1 flex-col p-4">
+      <div class="flex items-center gap-2 text-body-sm text-ink/50">
+        <img v-if="car.brand_logo_url" :src="car.brand_logo_url" alt="" class="w-4 h-4 object-contain opacity-80" />
+        <span>{{ car.years }}</span>
       </div>
-      <h3 class="font-display font-bold uppercase text-2xl leading-tight mt-1 text-ink">
+      <h3 class="font-display font-bold uppercase text-2xl leading-tight mt-1 text-ink group-hover:text-accent transition-colors">
         {{ car.brand }} {{ car.model }}
       </h3>
-      <p class="font-mono text-data-sm text-ink/50 mt-1.5">
-        {{ car.engine }} · {{ car.power_hp }} KS
+      <p class="text-body-sm text-ink/50 mt-1">
+        {{ car.engine }}<template v-if="car.power_hp"> · {{ car.power_hp }} KS</template> · {{ transmissionLabel(car.transmission) }}
       </p>
 
-      <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
-        <span class="font-mono text-eyebrow text-ink/40">AI OCENA</span>
-        <RatingBadge v-if="car.overall_rating" :rating="car.overall_rating" />
-        <span v-else class="font-mono text-data-sm text-ink/30">Uskoro</span>
+      <div class="mt-auto pt-4">
+        <div class="flex items-center justify-between border-t border-ink/10 pt-3">
+          <template v-if="car.overall_rating">
+            <span class="text-body-sm" :class="scoreTone(car.overall_rating).text">{{ scoreVerdict(car.overall_rating) }}</span>
+            <span class="font-data text-data-lg font-semibold text-ink">
+              {{ formatScore(car.overall_rating) }}<span class="text-data-sm font-normal text-ink/40">/10</span>
+            </span>
+          </template>
+          <span v-else class="text-body-sm text-ink/40">Analiza uskoro</span>
+        </div>
       </div>
     </div>
   </NuxtLink>

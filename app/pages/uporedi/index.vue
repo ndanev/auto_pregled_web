@@ -1,85 +1,91 @@
 <script setup lang="ts">
+// Poređenje dva automobila. Izbor se čuva u URL-u (?a=slug&b=slug) da bi link mogao da se podeli.
+// Bez oba parametra prikazuje se birač; sa njima — tabela poređenja.
+import type { CarDetail } from '~/types/car'
+
 const route = useRoute()
 const router = useRouter()
-
-const aSlug = computed(() => route.query.a as string | undefined)
-const bSlug = computed(() => route.query.b as string | undefined)
-const hasSelection = computed(() => !!aSlug.value && !!bSlug.value)
-
 const { fetchCars, fetchCarBySlug } = useCarsApi()
 
-// Lista svih automobila za birač
+const slugA = computed(() => route.query.a as string | undefined)
+const slugB = computed(() => route.query.b as string | undefined)
+const hasSelection = computed(() => !!slugA.value && !!slugB.value)
+
+// --- Birač -----------------------------------------------------------------
+
 const { data: allCarsData } = await useAsyncData('compare-all-cars', () => fetchCars())
 const allCars = computed(() => allCarsData.value?.data ?? [])
 
-const pickerA = ref<string | undefined>(aSlug.value)
-const pickerB = ref<string | undefined>(bSlug.value)
+// picked[0] je prvi, picked[1] drugi automobil
+const picked = ref<(string | undefined)[]>([slugA.value, slugB.value])
+const pickerLabels = ['PRVI AUTOMOBIL', 'DRUGI AUTOMOBIL']
+const canCompare = computed(() => !!picked.value[0] && !!picked.value[1] && picked.value[0] !== picked.value[1])
 
-function handlePickerSubmit() {
-  if (!pickerA.value || !pickerB.value || pickerA.value === pickerB.value) return
-  router.push({ path: '/uporedi', query: { a: pickerA.value, b: pickerB.value } })
+function startComparison() {
+  if (!canCompare.value) return
+  router.push({ path: '/uporedi', query: { a: picked.value[0], b: picked.value[1] } })
 }
 
-// Rezultati poređenja (samo kad je selekcija dostupna)
-const { data: carAData } = await useAsyncData(
-  'compare-a',
-  () => (aSlug.value ? fetchCarBySlug(aSlug.value) : Promise.resolve(null)),
-  { watch: [aSlug] }
-)
-const { data: carBData } = await useAsyncData(
-  'compare-b',
-  () => (bSlug.value ? fetchCarBySlug(bSlug.value) : Promise.resolve(null)),
-  { watch: [bSlug] }
+// --- Rezultati -------------------------------------------------------------
+
+const { data: comparedData } = await useAsyncData(
+  'compare-cars',
+  async () => {
+    if (!slugA.value || !slugB.value) return null
+    const [a, b] = await Promise.all([fetchCarBySlug(slugA.value), fetchCarBySlug(slugB.value)])
+    return [a.data, b.data] as [CarDetail, CarDetail]
+  },
+  { watch: [slugA, slugB] }
 )
 
-const carA = computed(() => carAData.value?.data)
-const carB = computed(() => carBData.value?.data)
-const bothLoaded = computed(() => !!carA.value && !!carB.value)
+const cars = computed(() => comparedData.value ?? null)
+const bothHaveAnalysis = computed(() => !!cars.value?.every((car) => car.analysis))
+
+const specRows = computed(() => {
+  if (!cars.value) return []
+  const [a, b] = cars.value
+  return [
+    { label: 'Generacija', a: a.generation, b: b.generation },
+    { label: 'Godine', a: a.years, b: b.years },
+    { label: 'Gorivo', a: fuelLabel(a.fuel_type), b: fuelLabel(b.fuel_type) },
+    { label: 'Snaga', a: `${a.power_hp} KS`, b: `${b.power_hp} KS` },
+    { label: 'Menjač', a: transmissionLabel(a.transmission), b: transmissionLabel(b.transmission) },
+  ]
+})
+
+function carName(car: CarDetail): string {
+  return `${car.brand} ${car.model}`
+}
 
 useSeoMeta({
-  title: bothLoaded.value
-    ? `${carA.value!.brand} ${carA.value!.model} vs ${carB.value!.brand} ${carB.value!.model}`
-    : 'Uporedi automobile',
+  title: () => (cars.value ? `${carName(cars.value[0])} vs ${carName(cars.value[1])}` : 'Uporedi automobile'),
 })
 </script>
 
 <template>
-  <div class="mx-auto max-w-5xl px-6 py-12">
-    <span class="font-mono text-eyebrow text-steel">POREĐENJE</span>
+  <div class="site-container py-12">
+    <span class="font-data text-eyebrow text-steel">POREĐENJE</span>
     <h1 class="font-display font-extrabold uppercase text-display-lg mt-2 text-ink">
-      <template v-if="bothLoaded">
-        {{ carA!.brand }} {{ carA!.model }} <span class="text-ink/30">vs</span> {{ carB!.brand }} {{ carB!.model }}
+      <template v-if="cars">
+        {{ carName(cars[0]) }} <span class="text-ink/30">vs</span> {{ carName(cars[1]) }}
       </template>
       <template v-else>Uporedi automobile</template>
     </h1>
 
     <!-- Birač -->
-    <div v-if="!hasSelection" class="mt-10 border border-white/10 p-6">
-      <p class="font-mono text-data-sm text-ink/60 mb-6">Izaberi dva automobila za poređenje.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 items-end">
-        <div>
-          <label class="block font-mono text-eyebrow text-ink/40 mb-2">PRVI AUTOMOBIL</label>
+    <div v-if="!hasSelection" class="mt-10 border border-ink/10 p-6">
+      <p class="font-data text-data-sm text-ink/60 mb-6">Izaberi dva automobila za poređenje.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+        <div v-for="(label, index) in pickerLabels" :key="label">
+          <label :for="`picker-${index}`" class="block font-data text-eyebrow text-ink/40 mb-2">{{ label }}</label>
           <select
-            v-model="pickerA"
-            class="w-full bg-surface border border-white/15 px-3 py-2.5 font-mono text-data-sm text-ink focus:outline-none focus:border-amber"
+            :id="`picker-${index}`"
+            v-model="picked[index]"
+            class="w-full bg-white border border-ink/15 px-3 py-2.5 font-data text-data-sm text-ink focus:outline-none focus:border-accent"
           >
             <option :value="undefined" disabled>Izaberi automobil</option>
-            <option v-for="car in allCars" :key="car.slug" :value="car.slug" :disabled="car.slug === pickerB">
-              {{ car.brand }} {{ car.model }} — {{ car.engine }}
-            </option>
-          </select>
-        </div>
-
-        <span class="hidden sm:block font-mono text-ink/30 text-center pb-3">vs</span>
-
-        <div>
-          <label class="block font-mono text-eyebrow text-ink/40 mb-2">DRUGI AUTOMOBIL</label>
-          <select
-            v-model="pickerB"
-            class="w-full bg-surface border border-white/15 px-3 py-2.5 font-mono text-data-sm text-ink focus:outline-none focus:border-amber"
-          >
-            <option :value="undefined" disabled>Izaberi automobil</option>
-            <option v-for="car in allCars" :key="car.slug" :value="car.slug" :disabled="car.slug === pickerA">
+            <!-- Auto izabran u drugom biraču je onemogućen, da ne bi poredili isti auto sa samim sobom -->
+            <option v-for="car in allCars" :key="car.slug" :value="car.slug" :disabled="car.slug === picked[1 - index]">
               {{ car.brand }} {{ car.model }} — {{ car.engine }}
             </option>
           </select>
@@ -87,61 +93,43 @@ useSeoMeta({
       </div>
 
       <button
-        @click="handlePickerSubmit"
-        :disabled="!pickerA || !pickerB"
-        class="mt-6 bg-amber text-white font-mono text-eyebrow px-5 py-2.5 hover:bg-amber/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        type="button"
+        @click="startComparison"
+        :disabled="!canCompare"
+        class="mt-6 bg-accent text-white font-data text-eyebrow px-5 py-2.5 hover:bg-accent-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Uporedi
       </button>
     </div>
 
     <!-- Rezultati -->
-    <template v-else-if="bothLoaded">
-      <div class="grid grid-cols-2 gap-8 mt-10 border-b border-white/10 pb-10">
-        <div class="flex flex-col items-center">
-          <RatingGauge :rating="carA!.overall_rating ?? 0" label="AI OCENA" :size="180" />
-          <span class="font-mono text-data text-ink/60 mt-2">{{ carA!.engine }} · {{ carA!.power_hp }} KS</span>
-        </div>
-        <div class="flex flex-col items-center">
-          <RatingGauge :rating="carB!.overall_rating ?? 0" label="AI OCENA" :size="180" />
-          <span class="font-mono text-data text-ink/60 mt-2">{{ carB!.engine }} · {{ carB!.power_hp }} KS</span>
+    <template v-else-if="cars">
+      <div class="grid grid-cols-2 gap-8 mt-10 border-b border-ink/10 pb-10">
+        <div v-for="car in cars" :key="car.slug" class="flex flex-col items-center">
+          <RatingGauge :rating="car.overall_rating ?? 0" label="AI OCENA" :size="180" />
+          <span class="font-data text-data text-ink/60 mt-2">{{ car.engine }} · {{ car.power_hp }} KS</span>
         </div>
       </div>
 
       <div class="mt-10">
         <SectionLabel text="SPECIFIKACIJE" />
-        <div class="border border-white/10 divide-y divide-white/10">
-          <div
-            v-for="row in [
-              { label: 'Generacija', a: carA!.generation, b: carB!.generation },
-              { label: 'Godine', a: carA!.years, b: carB!.years },
-              { label: 'Gorivo', a: carA!.fuel_type, b: carB!.fuel_type },
-              { label: 'Snaga', a: `${carA!.power_hp} KS`, b: `${carB!.power_hp} KS` },
-              { label: 'Menjač', a: carA!.transmission, b: carB!.transmission },
-            ]"
-            :key="row.label"
-            class="grid grid-cols-3 px-5 py-3 bg-white items-center"
-          >
-            <span class="font-mono text-data-sm text-ink">{{ row.a }}</span>
-            <span class="font-mono text-eyebrow text-ink/40 text-center">{{ row.label }}</span>
-            <span class="font-mono text-data-sm text-ink text-right">{{ row.b }}</span>
+        <div class="border border-ink/10 divide-y divide-ink/10">
+          <div v-for="row in specRows" :key="row.label" class="grid grid-cols-3 px-5 py-3 bg-white items-center">
+            <span class="font-data text-data-sm text-ink">{{ row.a }}</span>
+            <span class="font-data text-eyebrow text-ink/40 text-center">{{ row.label }}</span>
+            <span class="font-data text-data-sm text-ink text-right">{{ row.b }}</span>
           </div>
         </div>
       </div>
 
-      <template v-if="carA!.analysis && carB!.analysis">
+      <template v-if="bothHaveAnalysis">
         <div class="mt-10">
           <SectionLabel text="POUZDANOST" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border border-white/10 bg-white p-5 space-y-4">
-              <ScoreBar label="MOTOR" :score="carA!.analysis.reliability.engine_reliability" />
-              <ScoreBar label="MENJAČ" :score="carA!.analysis.reliability.transmission_reliability" />
-              <ScoreBar label="ELEKTRONIKA" :score="carA!.analysis.reliability.electronics_reliability" />
-            </div>
-            <div class="border border-white/10 bg-white p-5 space-y-4">
-              <ScoreBar label="MOTOR" :score="carB!.analysis.reliability.engine_reliability" />
-              <ScoreBar label="MENJAČ" :score="carB!.analysis.reliability.transmission_reliability" />
-              <ScoreBar label="ELEKTRONIKA" :score="carB!.analysis.reliability.electronics_reliability" />
+            <div v-for="car in cars" :key="car.slug" class="border border-ink/10 bg-white p-5 space-y-4">
+              <ScoreBar label="Motor" :score="car.analysis!.reliability.engine_reliability" />
+              <ScoreBar label="Menjač" :score="car.analysis!.reliability.transmission_reliability" />
+              <ScoreBar label="Elektronika" :score="car.analysis!.reliability.electronics_reliability" />
             </div>
           </div>
         </div>
@@ -149,11 +137,8 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="POTROŠNJA GORIVA (KOMBINOVANO)" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border border-white/10 bg-white p-5 text-center">
-              <span class="font-mono text-data-xl text-ink">{{ carA!.analysis.fuel_consumption.combined }}</span>
-            </div>
-            <div class="border border-white/10 bg-white p-5 text-center">
-              <span class="font-mono text-data-xl text-ink">{{ carB!.analysis.fuel_consumption.combined }}</span>
+            <div v-for="car in cars" :key="car.slug" class="border border-ink/10 bg-white p-5 text-center">
+              <CompareFuelValue :text="car.analysis!.fuel_consumption.combined" />
             </div>
           </div>
         </div>
@@ -161,22 +146,19 @@ useSeoMeta({
         <div class="mt-10">
           <SectionLabel text="AI ZAKLJUČCI" />
           <div class="grid grid-cols-2 gap-6">
-            <div class="border-l-2 border-amber bg-white p-5">
-              <p class="text-body-sm text-ink/80">{{ carA!.analysis.ai_summary.final_verdict }}</p>
-            </div>
-            <div class="border-l-2 border-amber bg-white p-5">
-              <p class="text-body-sm text-ink/80">{{ carB!.analysis.ai_summary.final_verdict }}</p>
+            <div v-for="car in cars" :key="car.slug" class="border-l-2 border-accent bg-white p-5">
+              <p class="text-body-sm text-ink/80">{{ car.analysis!.ai_summary.final_verdict }}</p>
             </div>
           </div>
         </div>
       </template>
 
-      <div v-else class="mt-10 text-ink/50 font-mono text-data">
+      <div v-else class="mt-10 text-ink/50 font-data text-data">
         AI analiza nije dostupna za jedan ili oba automobila.
       </div>
 
       <div class="mt-8">
-        <NuxtLink to="/uporedi" class="font-mono text-data-sm text-amber hover:underline">← Uporedi druge automobile</NuxtLink>
+        <NuxtLink to="/uporedi" class="font-data text-data-sm text-accent hover:underline">← Uporedi druge automobile</NuxtLink>
       </div>
     </template>
   </div>

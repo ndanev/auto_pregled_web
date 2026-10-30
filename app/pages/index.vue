@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Početna stranica. Veći blokovi (hero, poziv na poređenje) su u `components/home/`.
 const { fetchCars } = useCarsApi()
 const { fetchBrands } = useBrandsApi()
 
@@ -8,25 +9,15 @@ const { data: brandsData } = await useAsyncData('home-brands', () => fetchBrands
 const cars = computed(() => carsData.value?.data ?? [])
 const brands = computed(() => brandsData.value?.data ?? [])
 
-const topRated = computed(() => {
-  return [...cars.value]
-    .filter((c) => c.overall_rating !== null)
+const topRated = computed(() =>
+  cars.value
+    .filter((car) => car.overall_rating !== null)
     .sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0))
     .slice(0, 3)
-})
+)
 
-const latestCars = computed(() => cars.value.slice(0, 6))
-
-const router = useRouter()
-const searchQuery = ref('')
-
-function handleSearch() {
-  router.push({ path: '/automobili', query: searchQuery.value ? { q: searchQuery.value } : {} })
-}
-
-function handleBodyType(value: string) {
-  router.push({ path: '/automobili', query: { body_type: value } })
-}
+// API vraća automobile od najnovijeg ka najstarijem
+const latestCars = computed(() => cars.value.slice(0, 8))
 
 const steps = [
   { title: 'Pretraži bazu', text: 'Pronađi marku, model ili generaciju koja te zanima među analiziranim vozilima.' },
@@ -37,127 +28,56 @@ const steps = [
 
 <template>
   <div>
-    <!-- Hero -->
-    <section
-      class="relative from-canvas via-canvas/80 to-canvas/50 bg-cover bg-center"
-      style="background-image: url('/images/hero-bg.jpg');"
-    >
-      <div class="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/70 to-canvas/40"></div>
-
-      <div class="relative mx-auto max-w-3xl px-6 py-24 md:py-32 text-center">
-        <span class="font-mono text-eyebrow text-canvas/70">AI ANALIZA VOZILA</span>
-        <h1 class="font-display font-extrabold uppercase leading-[0.9] text-display-lg md:text-display-xl mt-4x drop-shadow-lg">
-          Da li je ovo<br /><span class="text-amber">dobar izbor?</span>
-        </h1>
-        <p class="mt-6 text-body-lg max-w-xl mx-auto drop-shadow">
-          Pouzdanost, potrošnja, najčešći kvarovi i AI zaključak — strukturirano,
-          na jednom mestu, pre nego što odlučiš.
-        </p>
-
-        <form class="mt-10 flex max-w-xl mx-auto rounded-full overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.4)]" @submit.prevent="handleSearch">
-          <input
-            v-model="searchQuery"
-            type="text" placeholder="Pretraži marku ili model, npr. Golf 7"
-            class="flex-1 bg-white px-6 py-4 font-mono text-body-sm placeholder:text-black/40 focus:outline-none text-black"
-          />
-          <button type="submit" class="bg-amber text-ink font-mono text-eyebrow font-semibold px-6 hover:bg-amber-dark transition-colors shrink-0">
-            Pretraga
-          </button>
-        </form>
-
-        <div class="mt-8 flex flex-wrap justify-center gap-2.5">
-          <button
-            v-for="cat in BODY_TYPE_CATEGORIES" :key="cat.value"
-            @click="handleBodyType(cat.value)"
-            class="font-mono text-data-sm px-4 py-2 rounded-full border border-canvas/30 bg-ink/20 backdrop-blur-sm hover:border-amber/70 hover:text-amber transition-colors"
-          >
-            {{ cat.label }}
-          </button>
-        </div>
-
-        <p v-if="cars.length > 0" class="mt-8 font-mono text-data-sm text-canvas/60">
-          {{ cars.length }} automobila analizirano AI tehnologijom
-        </p>
-      </div>
-    </section>
+    <HomeHero :car-count="cars.length" />
 
     <!-- Marke -->
-    <section v-if="brands.length > 0" class="border-b border-white/10">
-      <div class="mx-auto max-w-6xl px-6 py-10">
-        <span class="font-mono text-eyebrow text-steel">PRETRAŽI PO MARCI</span>
+    <section v-if="brands.length > 0" class="border-b border-ink/10">
+      <div class="site-container py-10">
+        <span class="font-data text-eyebrow text-steel">PRETRAŽI PO MARCI</span>
         <div class="mt-5 flex flex-wrap gap-3">
           <NuxtLink
             v-for="brand in brands" :key="brand.slug"
             :to="`/marke/${brand.slug}`"
-            class="flex items-center gap-2 rounded-full border border-white/10 px-4 py-2.5 hover:border-amber transition-colors bg-surface"
+            class="flex items-center gap-2 rounded-full border border-ink/10 px-4 py-2.5 hover:border-accent transition-colors bg-white"
           >
-            <!-- <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="w-5 h-5 object-contain" /> -->
-            <span class="font-mono text-data-sm text-ink">{{ brand.name }}</span>
+            <img v-if="brand.logo_url" :src="brand.logo_url" alt="" class="w-5 h-5 object-contain" />
+            <span class="font-data text-data-sm text-ink">{{ brand.name }}</span>
           </NuxtLink>
         </div>
       </div>
     </section>
 
     <!-- Najbolje ocenjeno -->
-    <section v-if="topRated.length > 0" class="mx-auto max-w-6xl px-6 py-14">
-      <div class="flex items-baseline justify-between mb-6">
-        <div>
-          <span class="font-mono text-eyebrow text-steel">TOP OCENA</span>
-          <h2 class="font-display font-bold uppercase text-display-sm text-ink mt-1">Najbolje ocenjeno</h2>
-        </div>
-      </div>
-
+    <section v-if="topRated.length > 0" class="site-container py-14">
+      <SectionHeading eyebrow="TOP OCENA" title="Najbolje ocenjeno" />
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <CarCard v-for="car in topRated" :key="car.slug" :car="car" />
       </div>
     </section>
 
-    <!-- Uporedi CTA -->
-    <section class="bg-surface text-ink">
-      <div class="mx-auto max-w-6xl px-6 py-14 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-        <div>
-          <span class="font-mono text-eyebrow text-canvas/50">NEODLUČAN?</span>
-          <h2 class="font-display font-bold uppercase text-display-sm text-white mt-1">
-            Uporedi dva automobila jedan pored drugog
-          </h2>
-          <p class="text-body-sm mt-2 max-w-md">
-            Pouzdanost, potrošnja i AI zaključak — sve na jednom ekranu, pre nego što odlučiš.
-          </p>
-        </div>
-        <NuxtLink
-          to="/uporedi"
-          class="shrink-0 bg-amber text-ink font-mono text-eyebrow font-semibold rounded-full px-6 py-3 hover:bg-amber-dark transition-colors"
-        >
-          Uporedi automobile →
-        </NuxtLink>
-      </div>
-    </section>
+    <HomeCompareCta />
 
     <!-- Poslednje dodato -->
-    <section class="mx-auto max-w-6xl px-6 py-14">
-      <div class="flex items-baseline justify-between mb-6">
-        <div>
-          <span class="font-mono text-eyebrow text-steel">SVEŽE</span>
-          <h2 class="font-display font-bold uppercase text-display-sm text-ink mt-1">Poslednje dodato</h2>
-        </div>
-        <NuxtLink to="/automobili" class="font-mono text-data-sm text-ink font-medium hover:text-amber-dark transition-colors underline decoration-amber decoration-2 underline-offset-4">
+    <section class="site-container py-14">
+      <SectionHeading eyebrow="SVEŽE" title="Poslednje dodato">
+        <NuxtLink to="/automobili" class="font-data text-data-sm text-ink font-medium hover:text-accent-dark transition-colors underline decoration-accent decoration-2 underline-offset-4">
           Prikaži sve →
         </NuxtLink>
-      </div>
+      </SectionHeading>
 
-      <div v-if="latestCars.length === 0" class="text-ink/50 font-mono text-data">Trenutno nema objavljenih automobila.</div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+      <div v-if="latestCars.length === 0" class="text-ink/50 font-data text-data">Trenutno nema objavljenih automobila.</div>
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         <CarCard v-for="car in latestCars" :key="car.slug" :car="car" />
       </div>
     </section>
 
     <!-- Kako radi -->
-    <section class="border-t border-white/10">
-      <div class="mx-auto max-w-6xl px-6 py-14">
-        <span class="font-mono text-eyebrow text-steel">KAKO RADI</span>
+    <section class="border-t border-ink/10">
+      <div class="site-container py-14">
+        <span class="font-data text-eyebrow text-steel">KAKO RADI</span>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <div v-for="(step, index) in steps" :key="step.title" class="rounded-2xl border border-white/10 bg-surface p-6">
-            <span class="font-mono text-data-sm text-amber-dark font-semibold">0{{ index + 1 }}</span>
+          <div v-for="(step, index) in steps" :key="step.title" class="rounded-2xl border border-ink/10 bg-white p-6">
+            <span class="font-data text-data-sm text-accent-dark font-semibold">0{{ index + 1 }}</span>
             <h3 class="font-display font-bold uppercase text-display-sm text-ink mt-2">{{ step.title }}</h3>
             <p class="text-body-sm text-ink/60 mt-2">{{ step.text }}</p>
           </div>
@@ -166,9 +86,9 @@ const steps = [
     </section>
 
     <!-- O AI analizi -->
-    <section class="border-t border-white/10 bg-surface">
+    <section class="border-t border-ink/10 bg-sand">
       <div class="mx-auto max-w-3xl px-6 py-14 text-center">
-        <span class="font-mono text-eyebrow text-steel">METODOLOGIJA</span>
+        <span class="font-data text-eyebrow text-steel">METODOLOGIJA</span>
         <h2 class="font-display font-bold uppercase text-display-sm text-ink mt-2">Kako nastaje AI analiza</h2>
         <p class="text-body-sm text-ink/60 mt-4 leading-relaxed">
           Svaka analiza generiše se na osnovu tehničkih specifikacija vozila i opšte poznatih

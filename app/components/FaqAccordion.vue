@@ -1,7 +1,8 @@
 <script setup lang="ts">
+// Lista pitanja i odgovora; otvoreno je najviše jedno pitanje (prvo je otvoreno na početku).
 const props = defineProps<{ items: { question: string; answer: string }[] }>()
 
-const openIndex = ref<number | null>(null)
+const openIndex = ref<number | null>(0)
 
 function toggle(index: number) {
   openIndex.value = openIndex.value === index ? null : index
@@ -9,20 +10,23 @@ function toggle(index: number) {
 </script>
 
 <template>
-  <div class="rounded-2xl border border-white/10 divide-y divide-white/10 overflow-hidden">
+  <div class="border-y border-ink/10 divide-y divide-ink/10">
     <div v-for="(item, index) in props.items" :key="item.question">
       <button
+        type="button"
         @click="toggle(index)"
-        class="w-full flex items-center justify-between px-5 py-4 text-left bg-surface hover:bg-white/5 transition-colors"
+        :aria-expanded="openIndex === index"
+        class="w-full flex items-start justify-between gap-6 py-5 text-left group"
       >
-        <span class="font-mono text-data text-ink font-medium pr-4">{{ item.question }}</span>
+        <span class="text-body-lg text-ink font-medium group-hover:text-accent transition-colors">{{ item.question }}</span>
         <span
-          class="font-mono text-data text-ink/40 shrink-0 transition-transform"
-          :class="{ 'rotate-45': openIndex === index }"
+          class="mt-1 h-6 w-6 shrink-0 rounded-full border border-ink/20 flex items-center justify-center text-ink/60 transition-transform"
+          :class="{ 'rotate-45 border-accent text-accent': openIndex === index }"
+          aria-hidden="true"
         >+</span>
       </button>
-      <div v-if="openIndex === index" class="px-5 pb-4 bg-surface">
-        <p class="text-body-sm text-ink/70 leading-relaxed">{{ item.answer }}</p>
+      <div v-if="openIndex === index" class="pb-6 pr-12">
+        <p class="text-body text-ink/70">{{ item.answer }}</p>
       </div>
     </div>
   </div>

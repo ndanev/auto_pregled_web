@@ -1,5 +1,6 @@
 import type { BrandSummary, BrandDetail } from '~/types/brand'
 
+/** Pozivi ka /api/brands. */
 export function useBrandsApi() {
   const { api } = useApi()
 
