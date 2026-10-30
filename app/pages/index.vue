@@ -30,6 +30,8 @@ const steps = [
   <div>
     <HomeHero :car-count="cars.length" />
 
+    <HomeCarFinder :cars="cars" />
+
     <!-- Marke -->
     <section v-if="brands.length > 0" class="border-b border-ink/10">
       <div class="site-container py-10">
@@ -46,6 +48,8 @@ const steps = [
         </div>
       </div>
     </section>
+
+    <HomeBestFor :cars="cars" />
 
     <!-- Najbolje ocenjeno -->
     <section v-if="topRated.length > 0" class="site-container py-14">
@@ -70,6 +74,8 @@ const steps = [
         <CarCard v-for="car in latestCars" :key="car.slug" :car="car" />
       </div>
     </section>
+
+    <HomeInspectionGuide />
 
     <!-- Kako radi -->
     <section class="border-t border-ink/10">
