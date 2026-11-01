@@ -65,6 +65,8 @@ app/
 │   ├── glossary.ts               sadržaj rečnika + findGlossaryTerm()
 │   ├── inspection.ts             opšti spisak za pregled (početna i /vodic)
 │   ├── compare.ts                ko je bolji u kom redu na /uporedi + predlozi poređenja
+│   ├── fuelCost.ts               kalkulator troška goriva: početne cene goriva i račun
+│   ├── search.ts                 pretraga u zaglavlju (bez kvačica, crtica i razmaka)
 │   ├── carFilters.ts             opcije za gorivo i menjač
 │   └── bodyTypeCategories.ts     opcije za karoseriju
 │
@@ -170,6 +172,11 @@ kao primer. Ne zaboravi link u futeru (`components/TheFooter.vue`) i adresu u `s
 **…dodam novu opciju filtera (npr. novo gorivo)**
 
 Dodaj stavku u `FUEL_TYPE_OPTIONS` u `utils/carFilters.ts`. Filter na `/automobili` i oznake na celom sajtu je preuzimaju automatski.
+
+**…ažuriram početne cene goriva u kalkulatoru**
+
+Promeni `DEFAULT_FUEL_PRICES` u `utils/fuelCost.ts`. Korisnici koji su već upisali svoju cenu i dalje vide svoju
+(pamti se u browseru pod ključem `fuel-calculator`).
 
 **…promenim boju akcenta**
 

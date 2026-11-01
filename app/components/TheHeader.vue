@@ -2,6 +2,7 @@
 // Glavna navigacija.
 // - Desktop (lg+): svi linkovi u jednom redu.
 // - Telefon i tablet: dugme ☰ otvara meni ispod headera (6 linkova ne staje u jedan red).
+// - Pretraga (HeaderSearch) je uvek vidljiva: kao polje na desktopu, kao ikonica na telefonu.
 // `active-class` ističe link stranice na kojoj je korisnik (i za podstranice, npr. /automobili/golf).
 
 interface NavLink {
@@ -51,36 +52,40 @@ watch(() => route.fullPath, () => {
         Auto Pregled
       </NuxtLink>
 
-      <!-- Desktop -->
-      <nav class="hidden lg:flex items-center gap-1" aria-label="Glavna navigacija">
-        <template v-for="group in NAV_GROUPS" :key="group.title">
-          <NuxtLink
-            v-for="link in group.links" :key="link.to"
-            :to="link.to"
-            class="rounded-full px-3 py-1.5 text-body-sm font-medium text-ink/60 hover:text-ink hover:bg-ink/5 transition-colors whitespace-nowrap"
-            active-class="!text-ink bg-ink/5"
-          >
-            {{ link.shortLabel ?? link.label }}
-          </NuxtLink>
-        </template>
-      </nav>
+      <div class="flex items-center gap-1 lg:gap-4">
+        <!-- Desktop -->
+        <nav class="hidden lg:flex items-center gap-1" aria-label="Glavna navigacija">
+          <template v-for="group in NAV_GROUPS" :key="group.title">
+            <NuxtLink
+              v-for="link in group.links" :key="link.to"
+              :to="link.to"
+              class="rounded-full px-3 py-1.5 text-body-sm font-medium text-ink/60 hover:text-ink hover:bg-ink/5 transition-colors whitespace-nowrap"
+              active-class="!text-ink bg-ink/5"
+            >
+              {{ link.shortLabel ?? link.label }}
+            </NuxtLink>
+          </template>
+        </nav>
 
-      <!-- Telefon i tablet: dugme za meni -->
-      <button
-        type="button"
-        class="lg:hidden -mr-2 flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-ink/5 transition-colors"
-        :aria-expanded="isMenuOpen"
-        aria-controls="mobile-menu"
-        :aria-label="isMenuOpen ? 'Zatvori meni' : 'Otvori meni'"
-        @click="isMenuOpen = !isMenuOpen"
-      >
-        <svg v-if="!isMenuOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" />
-        </svg>
-        <svg v-else width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      </button>
+        <HeaderSearch />
+
+        <!-- Telefon i tablet: dugme za meni -->
+        <button
+          type="button"
+          class="lg:hidden -mr-2 flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-ink/5 transition-colors"
+          :aria-expanded="isMenuOpen"
+          aria-controls="mobile-menu"
+          :aria-label="isMenuOpen ? 'Zatvori meni' : 'Otvori meni'"
+          @click="isMenuOpen = !isMenuOpen"
+        >
+          <svg v-if="!isMenuOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg v-else width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Telefon i tablet: otvoren meni -->

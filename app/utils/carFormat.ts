@@ -95,10 +95,12 @@ function toDecimalComma(value: string): string {
 }
 
 export interface ParsedFuel extends ParsedValue {
+  low: number // donja granica u l/100 km (4,4–5,0 → 4.4); kad nema raspona, low i high su isti
+  high: number // gornja granica u l/100 km (4,4–5,0 → 5.0)
   average: number // srednja vrednost u l/100 km, za poređenje dva automobila (4,4–5,0 → 4,7)
 }
 
-/** "procena: 4.4–5.0 L/100km" → { value: "4,4–5,0", estimate: true, average: 4.7 } */
+/** "procena: 4.4–5.0 L/100km" → { value: "4,4–5,0", estimate: true, low: 4.4, high: 5.0, average: 4.7 } */
 export function extractFuel(text: string): ParsedFuel | null {
   // broj, opciono "– drugi broj", pa "l/100km" (razmaci i velika/mala slova su dozvoljeni)
   const match = text.match(/(\d+(?:[.,]\d+)?)(?:\s*[–-]\s*(\d+(?:[.,]\d+)?))?\s*l\s*\/\s*100\s*km/i)
@@ -108,7 +110,7 @@ export function extractFuel(text: string): ParsedFuel | null {
 
   const low = Number(from.replace(',', '.'))
   const high = to ? Number(to.replace(',', '.')) : low
-  return { value, estimate: ESTIMATE_WORDS.test(text), average: (low + high) / 2 }
+  return { value, estimate: ESTIMATE_WORDS.test(text), low, high, average: (low + high) / 2 }
 }
 
 /** "procena 300-800 EUR" → { value: "300–800 €", estimate: true } */

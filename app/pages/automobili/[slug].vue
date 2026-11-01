@@ -50,7 +50,7 @@ const updatedAt = computed(() => formatDate(analysis.value?.meta?.generated_at))
         <div v-else class="space-y-16 md:space-y-20">
           <CarDetailSummary :analysis="analysis" />
           <CarDetailReliability :analysis="analysis" />
-          <CarDetailCosts :analysis="analysis" />
+          <CarDetailCosts :analysis="analysis" :fuel-type="car.fuel_type" />
           <CarDetailKnownIssues v-if="analysis.maintenance.common_repairs.length > 0" :repairs="analysis.maintenance.common_repairs" />
           <CarDetailBuyingGuide
             :guide="analysis.buying_guide"

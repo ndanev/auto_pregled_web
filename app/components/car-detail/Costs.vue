@@ -2,9 +2,10 @@
 // Sekcija "Troškovi": potrošnja goriva i održavanje.
 // Potrošnja stiže kao slobodan tekst — ako u njemu nađemo broj, prikazujemo ga krupno,
 // a ako nijedan red nema broj, prikazujemo tekst kao listu.
+// Kad brojeva ima, ispod tabele je i kalkulator troška goriva (FuelCalculator).
 import type { CarAnalysis } from '~/types/car'
 
-const props = defineProps<{ analysis: CarAnalysis }>()
+const props = defineProps<{ analysis: CarAnalysis; fuelType: string }>()
 
 const fuelRows = computed(() => {
   const fuel = props.analysis.fuel_consumption
@@ -15,6 +16,7 @@ const fuelRows = computed(() => {
   ].map((row) => ({ ...row, parsed: extractFuel(row.text) }))
 })
 const fuelHasNumbers = computed(() => fuelRows.value.some((row) => row.parsed))
+const pumpFuel = computed(() => pumpFuelFor(props.fuelType))
 
 const COST_LEVELS = [
   { key: 'low', label: 'Niski' },
@@ -48,6 +50,7 @@ const annualCost = computed(() => extractCost(props.analysis.maintenance.annual_
         <dd class="text-body text-ink/75">{{ capitalize(row.text) }}</dd>
       </div>
     </dl>
+    <CarDetailFuelCalculator v-if="fuelHasNumbers && pumpFuel" :consumption="analysis.fuel_consumption" :fuel="pumpFuel" />
     <p v-if="!fuelHasNumbers || hasInsufficientData(analysis, 'fuel_consumption')" class="mt-3 text-body-sm text-ink/55">
       Precizni podaci o potrošnji za ovu verziju nisu dostupni.
     </p>
