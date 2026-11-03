@@ -1,4 +1,4 @@
-# Auto Pregled — web
+# Autoskop — web
 
 Sajt sa AI analizama polovnih automobila: pouzdanost, troškovi, najčešći kvarovi i saveti pre kupovine.
 Ovo je samo frontend; podaci stižu iz zasebnog backend API-ja.
@@ -177,6 +177,11 @@ Dodaj stavku u `FUEL_TYPE_OPTIONS` u `utils/carFilters.ts`. Filter na `/automobi
 
 Promeni `DEFAULT_FUEL_PRICES` u `utils/fuelCost.ts`. Korisnici koji su već upisali svoju cenu i dalje vide svoju
 (pamti se u browseru pod ključem `fuel-calculator`).
+
+**…promenim ime sajta ili logo**
+
+Ime je u `SITE_NAME` u `utils/site.ts` — odatle ga uzimaju naslovi stranica (`app.vue`) i futer. Logo (znak + ime)
+je u `components/AppLogo.vue`; ako menjaš znak, promeni i `public/favicon.svg` (ista slika, sa upisanim bojama).
 
 **…promenim boju akcenta**
 

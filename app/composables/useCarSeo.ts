@@ -10,7 +10,7 @@ export function useCarSeo(car: Ref<CarDetail>) {
   const image = computed(() => car.value.images[0]?.url)
 
   useSeoMeta({
-    title: () => car.value.meta_title || `${name.value} — AI Pregled`,
+    title: () => car.value.meta_title || name.value, // " — Autoskop" dodaje titleTemplate u app.vue
     description,
     ogTitle: () => car.value.meta_title || name.value,
     ogDescription: description,

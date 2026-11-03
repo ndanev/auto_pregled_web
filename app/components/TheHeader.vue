@@ -47,9 +47,8 @@ watch(() => route.fullPath, () => {
 <template>
   <header class="sticky top-0 z-20 bg-page/85 backdrop-blur border-b border-ink/10" @keydown.esc="isMenuOpen = false">
     <div class="site-container h-16 flex items-center justify-between gap-4">
-      <NuxtLink to="/" class="flex items-center gap-2 whitespace-nowrap font-display font-extrabold text-xl sm:text-display-sm text-ink">
-        <span class="h-2.5 w-2.5 rounded-full bg-accent" aria-hidden="true"></span>
-        Auto Pregled
+      <NuxtLink to="/" :aria-label="`${SITE_NAME} — početna`">
+        <AppLogo class="text-xl sm:text-display-sm" />
       </NuxtLink>
 
       <div class="flex items-center gap-1 lg:gap-4">

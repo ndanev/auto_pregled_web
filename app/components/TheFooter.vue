@@ -9,7 +9,9 @@ const topBrands = computed(() => (data.value?.data ?? []).slice(0, 6))
   <footer class="border-t border-ink/10 bg-sand">
     <div class="site-container py-12 grid grid-cols-2 md:grid-cols-5 gap-8">
       <div class="col-span-2 md:col-span-1">
-        <span class="font-display font-extrabold text-display-sm text-ink">Auto Pregled</span>
+        <NuxtLink to="/" :aria-label="`${SITE_NAME} — početna`">
+          <AppLogo class="text-display-sm" />
+        </NuxtLink>
         <p class="font-data text-data-sm text-ink/60 mt-3">
           AI analiza polovnih automobila — pouzdanost, troškovi i najčešći kvarovi.
         </p>
@@ -47,7 +49,7 @@ const topBrands = computed(() => (data.value?.data ?? []).slice(0, 6))
 
     <div class="border-t border-ink/10">
       <div class="site-container py-6 flex items-center justify-between">
-        <span class="font-data text-data-sm text-ink/55">AUTO PREGLED — AI analiza automobila</span>
+        <span class="font-data text-data-sm text-ink/55">{{ SITE_NAME }} — {{ SITE_TAGLINE }}</span>
         <span class="font-data text-data-sm text-ink/55">© {{ new Date().getFullYear() }}</span>
       </div>
     </div>
